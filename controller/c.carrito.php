@@ -149,8 +149,8 @@ if ($total_carrito == 0) {
     $boton_finalizar = '';
     $mensaje_carrito = 'El carrito está vacío';
 } else {
-    $boton_finalizar = ' <form method="post" action="factura.php">
-                    <input type="submit" name="finalizar-compra" value="Finalizar compra" class="boton">
+    $boton_finalizar = ' <form method="post" action="../view/c.factura.php">
+                    <input type="submit" name="finalizar-compra" value="Finalizar compra" class="boton-comprar">
                 </form>';
     $mensaje_carrito = '';
 }

@@ -6,37 +6,42 @@
 
 
 <div class="row">
-    <div class="col-sm-8 col-md-9 col-lg-10">
+    <div class="col-sm-10 col-md-9 col-lg-10">
+        <div class="row" id="contenedor-tienda">
+            <!--VISUALIZACIÓN DE PRODUCTOS Y FORMULARIO PARA COMPRAR CADA PRODUCTO-->
+            <!--El boton para comprar cada producto está compuesto por ' comprar+idproducto', de modo que al darle a comprar tenga acceso a los datos del producto correspondiente el array $productos contendrá todos los productos o productos filtrados/buscados y muestro la información con un foreach-->
+            <?php
+            //Muestro los productos al usuario con/ sin filtrado
+            foreach ($productos as $producto) : ?>
+                <div class="col-sm-4 col-md-3 col-lg-2" id="contenedor-producto">
+                    <div class='producto'>
+                        <form method="post" action="../controller/c.carrito.php">
+                            <img src="data:image/jpeg;base64,<?= base64_encode($producto->getImagen()) ?>" alt="Imagen del producto" width="100"><br>
+                            <?= $producto->getNombre() ?><br>
+                            <?= $producto->getPrecio() ?> €<br>
+                            <input type="submit" name="comprar<?= $producto->getIdProducto() ?>" value="Añadir al carrito" class="boton-comprar">
+                        </form>
+                    </div>
+                </div>
+            <?php endforeach; ?>
 
-        <!--VISUALIZACIÓN DE PRODUCTOS Y FORMULARIO PARA COMPRAR CADA PRODUCTO-->
-        <!--El boton para comprar cada producto está compuesto por ' comprar+idproducto', de modo que al darle a comprar tenga acceso a los datos del producto correspondiente el array $productos contendrá todos los productos o productos filtrados/buscados y muestro la información con un foreach-->
-        <?php
-        //Muestro los productos al usuario con/ sin filtrado
-        foreach ($productos as $producto) : ?>
-            <div class="col-sm-4 col-md-3 col-lg-2">
-                <form method="post" action="../controller/c.carrito.php">
-                    <img src="data:image/jpeg;base64,<?= base64_encode($producto->getImagen()) ?>" alt="Imagen del producto" width="100"><br>
-                    <?= $producto->getNombre() ?><br>
-                    <?= $producto->getPrecio() ?> €<br>
-                    <input type="submit" name="comprar<?= $producto->getIdProducto() ?>" value="Añadir al carrito" class="boton-comprar">
-                </form>
-            </div>
-        <?php endforeach; ?>
+        </div>
     </div>
+
 
     <!--CARRITO DE LA COMPRA-->
 
-    <div class="col-sm-2 col-md-3 col-lg-2">
+    <div class="col-sm-2 col-md-3 col-lg-2" id="contenedor-carrito">
         <p class="cabecera-carrito">Carrito</p>
         <?php
         echo $mensaje_carrito;
         foreach ($productos_carrito as $producto_carrito) :
         ?>
             <form method="post" action="../controller/c.carrito.php">
-                <div class="producto-carrito">
+                <div class="producto">
                     <img src="data:image/jpeg;base64,<?= base64_encode($producto_carrito->getImagen()) ?>" alt="Imagen del producto" width="50"><br>
                     <?= $producto_carrito->getNombre() ?><br>
-                    <?= $producto_carrito->getPrecio() ?> euros<br><br>
+                    <?= $producto_carrito->getPrecio() ?> €<br><br>
 
                     <!--Botones para sumar y restar unidades de un producto del carrito y eliminar productos-->
                     <input type="submit" name="restar<?= $producto_carrito->getIdProducto() ?>" value="-">
