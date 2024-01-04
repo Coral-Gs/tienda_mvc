@@ -1,0 +1,162 @@
+#header {
+  background-color: #fdf7f2;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+}
+
+#menu {
+  margin: 20px 10px;
+}
+/*Estilos acceso.php*/
+
+.formulario-acceso {
+  border-color: #dad7d7;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 40px;
+  margin: 0 auto;
+  margin-top: 40px;
+  max-width: fit-content;
+  text-align: center;
+}
+
+.formulario-login {
+  border-color: #dad7d7;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 40px;
+  margin: 0 auto;
+  margin-top: 40px;
+  max-width: fit-content;
+  text-align: left;
+}
+
+/*Estilos botones*/
+
+.boton-acceder {
+  color: #fff;
+  background-color: #f38b12;
+  border-radius: 5px;
+  border-style: none;
+  padding: 10px 50px;
+  margin: 10px;
+}
+.boton-registro {
+  color: #491b1b;
+  background-color: #fff;
+  border-color: #491b1b;
+  border-radius: 5px;
+  border-style: solid;
+  padding: 10px 50px;
+  margin: 10px;
+}
+
+.boton-acceder:hover {
+  background-color: #491b1b;
+  transition-duration: 0.2s;
+}
+
+.boton-registro:hover {
+  color: #fff;
+  background-color: #491b1b;
+  transition-duration: 0.2s;
+}
+
+.boton-invitado {
+  color: #000;
+  background-color: #fff;
+  border-color: #000;
+  border-radius: 5px;
+  border-style: solid;
+  padding: 5px 10px;
+  margin: 10px;
+}
+
+.boton-invitado:hover {
+  color: #fff;
+  background-color: #000;
+  transition-duration: 0.2s;
+}
+
+.boton-comprar {
+  color: #fff;
+  background-color: #f38b12;
+  border-radius: 5px;
+  border-style: none;
+  padding: 10px 20px;
+  margin: 10px;
+}
+
+.boton-comprar {
+  color: #fff;
+  background-color: #f38b12;
+  border-radius: 5px;
+  border-style: none;
+  padding: 5px 10px;
+  margin: 10px;
+}
+
+.boton-comprar:hover {
+  background-color: #79450a;
+  transition-duration: 0.2s;
+}
+.boton-salir {
+  color: #fff;
+  background-color: #000;
+  border-radius: 5px;
+  border-style: none;
+  padding: 5px 10px;
+}
+
+.boton-salir:hover {
+  background-color: #515151;
+  transition-duration: 0.2s;
+}
+
+.error {
+  border-color: red;
+  padding: 10px 20px;
+}
+
+/*Estilos de tienda */
+
+/*Estilos de carrito*/
+
+.carrito {
+  border-style: solid;
+  border-radius: 1em;
+  border-color: rgb(55, 53, 51);
+  flex-direction: row;
+  margin: 20px;
+  padding: 10px;
+  max-height: fit-content;
+  min-width: 200px;
+  text-align: center;
+}
+
+.cabecera-carrito {
+  background-color: #491b1b;
+  color: #fff;
+  font-size: 20px;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+.producto-carrito {
+  border-style: solid;
+  border-radius: 0.5em;
+  border-color: rgb(166, 163, 161);
+  flex-direction: row;
+  font-size: 15px;
+  padding: 20px 10px;
+  margin: 10px;
+}
+
+.boton-eliminar {
+  background-color: #c92d2d;
+  border-style: none;
+  border-radius: 0.2em;
+  color: #fff;
+  cursor: pointer;
+}
