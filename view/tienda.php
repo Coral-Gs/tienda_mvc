@@ -2,10 +2,10 @@
 <!--VISTA DE TIENDA-->
 
 <!--MUESTRA DE PRODUCTOS-->
-<!--Envía datos al controlador de carrito c.carrito.php-->
-
+<!--Envía datos al controlador de carrito c.tienda.php-->
 
 <div class="row">
+    <h3 class="categoria-productos"><?php echo $titulo_tienda ?></h3>
     <div class="col-sm-10 col-md-9 col-lg-10">
         <div class="row" id="contenedor-tienda">
             <!--VISUALIZACIÓN DE PRODUCTOS Y FORMULARIO PARA COMPRAR CADA PRODUCTO-->
@@ -15,16 +15,16 @@
             foreach ($productos as $producto) : ?>
                 <div class="col-sm-4 col-md-3 col-lg-2" id="contenedor-producto">
                     <div class='producto'>
-                        <form method="post" action="../controller/c.carrito.php">
+                        <form method="post" action="../controller/c.tienda.php">
                             <img src="data:image/jpeg;base64,<?= base64_encode($producto->getImagen()) ?>" alt="Imagen del producto" width="100"><br>
                             <?= $producto->getNombre() ?><br>
                             <?= $producto->getPrecio() ?> €<br>
                             <input type="submit" name="comprar<?= $producto->getIdProducto() ?>" value="Añadir al carrito" class="boton-comprar">
+                            <input type="submit" name="detalle<?= $producto->getIdProducto() ?>" value="Detalle" class="boton-detalle">
                         </form>
                     </div>
                 </div>
             <?php endforeach; ?>
-
         </div>
     </div>
 
@@ -37,8 +37,8 @@
         echo $mensaje_carrito;
         foreach ($productos_carrito as $producto_carrito) :
         ?>
-            <form method="post" action="../controller/c.carrito.php">
-                <div class="producto">
+            <form method="post" action="../controller/c.tienda.php">
+                <div class="producto-carrito">
                     <img src="data:image/jpeg;base64,<?= base64_encode($producto_carrito->getImagen()) ?>" alt="Imagen del producto" width="50"><br>
                     <?= $producto_carrito->getNombre() ?><br>
                     <?= $producto_carrito->getPrecio() ?> €<br><br>
@@ -51,6 +51,7 @@
                 </div>
             </form>
         <?php endforeach;
+        echo '<strong>' . $total . '</strong>';
         echo $boton_finalizar; ?>
     </div>
 </div>

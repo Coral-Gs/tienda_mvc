@@ -18,9 +18,11 @@ class Usuario
     //Función pública estática para obtener los datos de un usuario
 
     public static function mostrarDatosUsuario($email)
+
     {
-        $conexion = TiendaDB::conexionDB();
         try {
+            //Conexión a BD
+            $conexion = TiendaDB::conexionDB();
 
             //1. Prepara la consulta
             $sql = 'SELECT * FROM usuario WHERE email=:email;';
@@ -47,9 +49,11 @@ class Usuario
 
     public static function buscarUsuario($email)
     {
-        $conexion = TiendaDB::conexionDB();
 
         try {
+            //Conexión a BD
+            $conexion = TiendaDB::conexionDB();
+
             //1. Prepara la consulta
             $sql = 'SELECT * FROM usuario WHERE email=:email;';
             $consulta = $conexion->prepare($sql);
@@ -79,9 +83,11 @@ class Usuario
     //Toma por parámetros el nombre, email y la contraseña previamente validados
     public static function crearUsuario($nombre, $email, $hash)
     {
-        $conexion = TiendaDB::conexionDB();
 
         try {
+            //Conexión a BD
+            $conexion = TiendaDB::conexionDB();
+
             //1. Prepara la consulta
             $sql = 'INSERT INTO usuario(nombre, email, contrasenia) VALUES (:nombre, :email,:pass);';
             $consulta = $conexion->prepare($sql);
@@ -110,9 +116,11 @@ class Usuario
     //Función estática para obtener ID de invitado mediante su email
     public static function buscarIdUsuario($email)
     {
-        $conexion = TiendaDB::conexionDB();
 
         try {
+            //Conexión a BD
+            $conexion = TiendaDB::conexionDB();
+
             //1. Prepara la consulta
             $sql = 'SELECT id_usuario FROM usuario WHERE email=:email;';
             $consulta = $conexion->prepare($sql);
@@ -166,8 +174,9 @@ class Usuario
 
     public function buscarUsuarioHash($email)
     {
-        $conexion = TiendaDB::conexionDB();
         try {
+            //Conexión a BD
+            $conexion = TiendaDB::conexionDB();
 
             //1. Prepara la consulta
             $sql = 'SELECT * FROM usuario WHERE email=:email';
@@ -201,8 +210,10 @@ class Usuario
 
     public static function crearUsuarioInvitado($nombre, $cookie_id)
     {
-        $conexion = TiendaDB::conexionDB();
         try {
+            //Conexión a BD
+            $conexion = TiendaDB::conexionDB();
+
             //1. Prepara la consulta
             $sql = 'INSERT INTO usuario(nombre, email, contrasenia, cookie_id) VALUES (:nombre,  :email , "usuario_invitado", :id_invitado);';
             $consulta = $conexion->prepare($sql);
@@ -233,8 +244,10 @@ class Usuario
 
     public static function buscarIdInvitado($cookie_id)
     {
-        $conexion = TiendaDB::conexionDB();
         try {
+            //Conexión a BD
+            $conexion = TiendaDB::conexionDB();
+
             //1. Prepara la consulta
             $sql = 'SELECT id_usuario FROM usuario WHERE cookie_id=:id;';
             $consulta = $conexion->prepare($sql);

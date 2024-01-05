@@ -25,7 +25,7 @@
             </div>
             <div class="col-sm-2 col-lg-2">
                 <!--Formulario para cerrar la sesión de usuario-->
-                <form method='post' action='c.index.php'>
+                <form method='post' action='../controller/c.index.php'>
                     <input type="submit" name="salir" value="Cerrar sesión" class="boton-salir">
                 </form>
             </div>

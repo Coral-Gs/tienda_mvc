@@ -41,7 +41,7 @@ class Carrito
         $id_usuario = $this->id_usuario;
 
         try {
-
+            //Conexióna BD
             $conexion = TiendaDB::conexionDB();
 
             //1. Prepara la consulta
@@ -65,15 +65,13 @@ class Carrito
         }
     }
 
-
-
     //Función  para mostrar si un producto existe o no en el carrito de un usuario
     public function buscarProductoCarrito($id_producto)
     {
         $id_usuario = $this->id_usuario;
 
         try {
-
+            //Conexióna BD
             $conexion = TiendaDB::conexionDB();
 
             //1. Prepara la consulta
@@ -101,12 +99,13 @@ class Carrito
         }
     }
 
-    //Función estática para agregar un producto al carrito
+    //Función para agregar un producto al carrito
     public function agregarProducto($id_producto)
     {
         $id_usuario = $this->id_usuario;
 
         try {
+            //Conexióna BD
             $conexion = TiendaDB::conexionDB();
 
             //1. Creo la sentencia SQL
@@ -130,14 +129,14 @@ class Carrito
     }
 
 
-    //Función estática para modificar cantidad de un producto desl carrito
+    //Función para modificar cantidad de un producto desl carrito
     public function modificarCantidadProducto($id_producto, $operacion)
     {
 
         $id_usuario = $this->id_usuario;
 
         try {
-
+            //Conexióna BD
             $conexion = TiendaDB::conexionDB();
             //Dependiendo de la operación dada utilizo una sentencia SQL u otra
             if ($operacion == 'sumar') {
@@ -161,51 +160,14 @@ class Carrito
         }
     }
 
-    //Función estática para calcular el total del carrito de un usuario según su id_usuario
-    public static function totalCarrito($id_usuario)
-    {
-
-        try {
-            $conexion = TiendaDB::conexionDB();
-
-            //Utilizo un JOIN para obtener la suma total del carrito
-            //ON para unir las dos tablas y la clausula GROUP BY para agrupar por ID de usuario
-            $sql = 'SELECT carrito.id_usuario, SUM(producto.precio * carrito.cantidad) AS total_carrito
-        FROM carrito
-        JOIN producto ON carrito.id_producto=producto.id_producto
-        WHERE id_usuario=:id_usuario
-        GROUP BY carrito.id_usuario;';
-            //Preparo la consulta, uno parámetros y ejecuto
-            $consulta = $conexion->prepare($sql);
-            $consulta->bindParam(':id_usuario', $id_usuario);
-            $consulta->execute();
-
-            //Obtengo los resultados con fetch en lugar de fetchAll porque solo quiero obtener una fila
-            $row = $consulta->fetch(PDO::FETCH_ASSOC);
-            //Si hay resultado aparece el total y si no 0.
-            if ($row) {
-                return $row['total_carrito'];
-            } else {
-                return 0;
-            }
-        } catch (PDOException $e) {
-            return 'Error: ' . $e->getMessage();
-        } finally {
-
-            //Cierro la conexión para liberar recursos
-            if ($conexion) {
-                $conexion = null;
-            }
-        }
-    }
-
-    //Función estática para eliminar un producto del carrito
+    //Función para eliminar un producto del carrito
     //Elimina por id_producto seleccionado + id_usuario asociado
     public function eliminarProducto($id_producto)
     {
         $id_usuario = $this->id_usuario;
 
         try {
+            //Conexióna BD
             $conexion = TiendaDB::conexionDB();
 
             $sql = 'DELETE FROM carrito WHERE id_usuario=:id_usuario AND id_producto=:id_producto;';
@@ -224,11 +186,38 @@ class Carrito
             }
         }
     }
+    //Función para vaciar el carrito
+    //Elimina todas las ocurrencias del id_usuario seleccionado de la tabla carritos, es decir, todos los productos
+
+    public function vaciarCarrito()
+
+    {
+        $id_usuario = $this->id_usuario;
+        try {
+            //Conexióna BD
+            $conexion = TiendaDB::conexionDB();
+
+            $sql = 'DELETE FROM carrito WHERE id_usuario=:id_usuario';
+            //Preparo la consulta, uno parámetros y ejecuto
+            $consulta = $conexion->prepare($sql);
+            $consulta->bindParam(':id_usuario', $id_usuario);
+            $consulta->execute();
+        } catch (PDOException $e) {
+            return 'Error: ' . $e->getMessage();
+        } finally {
+
+            //Cierro la conexión para liberar recursos
+            if ($conexion) {
+                $conexion = null;
+            }
+        }
+    }
 }
+
 //CLASE PRODUCTOCARRITO
 //Creo una clase que hereda de la clase Carrito y que además añade atributos de la clase Producto
 
-class ProductoCarrito extends Carrito
+class DetalleCarrito extends Carrito
 {
     public $nombre;
     public $descripcion;
@@ -254,15 +243,17 @@ class ProductoCarrito extends Carrito
         return $this->imagen;
     }
 
-    //Función pública estática para obtener los datos del carrito
+    //Función para obtener los datos del carrito
     //Devuelve un array de objetos de la clase ProductoCarrito. 
     //Cada fila de la tabla es un objeto ProductoCarrito, por lo que puedo acceder a las propiedades
     //De cada cada uno utilizando getters de esta clase y de la clase padre Carrito
 
-    public static function mostrarDatosCarrito($id_usuario)
+    public function mostrarDatosCarrito()
     {
-        $conexion = TiendaDB::conexionDB();
+        $id_usuario = $this->id_usuario;
         try {
+            $conexion = TiendaDB::conexionDB();
+
             //Utilizo un JOIN para obtener los datos de los productos del carrito
             //ON para unir las dos tablas y WHERE para seleccionar el id_usuario deseado
             $sql = 'SELECT carrito.id_usuario, producto.id_producto, producto.nombre, producto.descripcion, producto.precio, producto.imagen, carrito.cantidad
@@ -274,8 +265,47 @@ class ProductoCarrito extends Carrito
             $consulta->bindParam(':id_usuario', $id_usuario);
             $consulta->execute();
 
-            $resultados = $consulta->fetchAll(PDO::FETCH_CLASS, 'ProductoCarrito');
+            $resultados = $consulta->fetchAll(PDO::FETCH_CLASS, 'DetalleCarrito');
             return $resultados;
+        } catch (PDOException $e) {
+            return 'Error: ' . $e->getMessage();
+        } finally {
+
+            //Cierro la conexión para liberar recursos
+            if ($conexion) {
+                $conexion = null;
+            }
+        }
+    }
+
+    //Función para calcular el total del carrito de un usuario
+    public function totalCarrito()
+    {
+        $id_usuario = $this->id_usuario;
+
+        try {
+            $conexion = TiendaDB::conexionDB();
+
+            //Utilizo un JOIN para obtener la suma total del carrito
+            //ON para unir las dos tablas y la clausula GROUP BY para agrupar por ID de usuario
+            $sql = 'SELECT carrito.id_usuario, SUM(producto.precio * carrito.cantidad) AS total_carrito
+        FROM carrito
+        JOIN producto ON carrito.id_producto=producto.id_producto
+        WHERE id_usuario=:id_usuario
+        GROUP BY carrito.id_usuario;';
+            //Preparo la consulta, uno parámetros y ejecuto
+            $consulta = $conexion->prepare($sql);
+            $consulta->bindParam(':id_usuario', $id_usuario);
+            $consulta->execute();
+
+            //Obtengo los resultados con fetch en lugar de fetchAll porque solo quiero obtener una fila
+            $row = $consulta->fetch(PDO::FETCH_ASSOC);
+            //Si hay resultado aparece el total y si no 0.
+            if ($row) {
+                return $row['total_carrito'];
+            } else {
+                return 0;
+            }
         } catch (PDOException $e) {
             return 'Error: ' . $e->getMessage();
         } finally {

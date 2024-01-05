@@ -52,10 +52,11 @@ class Producto
 
     public static function mostrarDatosProductos()
     {
-        //Establezco conexión a BD
-        $conexion = tiendaDB::conexionDB();
 
         try {
+            //Establezco conexión a BD
+            $conexion = tiendaDB::conexionDB();
+
             //1. Setencia SQL
             $sql = 'SELECT * from producto;';
             //2. Preparo la consulta
@@ -68,6 +69,62 @@ class Producto
             return $resultados;
         } catch (PDOException $e) {
 
+            return 'Error: ' . $e->getMessage();
+        } finally {
+
+            //Cierro la conexión para liberar recursos
+            if ($conexion) {
+                $conexion = null;
+            }
+        }
+    }
+
+    //Función estática para filtrar los productos por categoría. Devuelve un array de objetos Producto
+
+    public static function filtrarProductosCategoria($categoria)
+    {
+        try {
+            //Establezco conexión a BD
+            $conexion = tiendaDB::conexionDB();
+
+            $sql = 'SELECT * FROM producto WHERE categoria=:categoria';
+            //Preparo la consulta, uno parámetros y ejecuto
+            $consulta = $conexion->prepare($sql);
+            $consulta->bindParam(':categoria', $categoria);
+            $consulta->execute();
+
+            //4. Obtengo los resultados como un array de objetos de clase Producto
+            $resultados = $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
+            return $resultados;
+        } catch (PDOException $e) {
+            return 'Error: ' . $e->getMessage();
+        } finally {
+
+            //Cierro la conexión para liberar recursos
+            if ($conexion) {
+                $conexion = null;
+            }
+        }
+    }
+
+    //Función estática para filtrar los productos por nombre. Devuelve un array de objetos Producto
+    public static function filtrarProductosNombre($texto)
+    {
+        try {
+            //Establezco conexión a BD
+            $conexion = tiendaDB::conexionDB();
+
+            $sql = 'SELECT * FROM producto WHERE LOWER(nombre) LIKE :texto';
+            //Preparo la consulta, uno parámetros y ejecuto
+            $consulta = $conexion->prepare($sql);
+            //Con bindParam me daba error y por lo tanto he usado bindValue
+            //que acepta valores literales
+            $consulta->bindValue(':texto', '%' . $texto . '%');
+            $consulta->execute();
+            //4. Obtengo los resultados como un array de objetos de clase Producto
+            $resultados = $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
+            return $resultados;
+        } catch (PDOException $e) {
             return 'Error: ' . $e->getMessage();
         } finally {
 

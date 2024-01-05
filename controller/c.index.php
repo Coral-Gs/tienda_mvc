@@ -13,6 +13,16 @@ session_start();
 include_once '../model/Producto.php';
 include_once '../model/Carrito.php';
 
+//Si el usuario la cierra con el botón salir se redirige a la página de acceso
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (isset($_POST['salir'])) {
+
+        session_destroy();
+        header('location:../view/acceso.php');
+    }
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
@@ -65,5 +75,5 @@ if (!isset($_SESSION['nombre'])) {
 } else {
 
     //Una vez que el usuario ha iniciado sesión, paso el mando al controlador de tienda/carrito
-    header('location:c.carrito.php');
+    header('location:c.tienda.php');
 }

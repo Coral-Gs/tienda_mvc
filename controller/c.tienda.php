@@ -13,7 +13,6 @@ session_start();
 //Incuyo modelos que voy a utilizar
 include_once '../model/Carrito.php';
 include_once '../model/Producto.php';
-include_once '../controller/ControladorUsuario.php';
 
 //MANEJO DE DATOS DE SESIÓN EN TIENDA
 
@@ -34,6 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         session_destroy();
         header('location:../view/acceso.php');
     }
+    if (isset($_POST['finalizar-compra'])) {
+
+        header('location:c.factura.php');
+    }
 }
 
 //MANEJO DE DATOS DE PRODUCTOS Y CARRITO
@@ -41,24 +44,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //Creo instancias y variables que necesito para manejar el carrito
 $carrito = new Carrito();
 $carrito->setIdUsuario($id_usuario);
+$detalle_carrito = new DetalleCarrito();
+$detalle_carrito->setIdUsuario($id_usuario);
 
 //Obtengo los datos de los productos, el carrito inicial y el total del carrito
 $productos = Producto::mostrarDatosProductos();
-$productos_carrito = ProductoCarrito::mostrarDatosCarrito($id_usuario);
-$total_carrito = Carrito::totalCarrito($id_usuario);
+$productos_carrito = $detalle_carrito->mostrarDatosCarrito();
+$total_carrito = $detalle_carrito->totalCarrito();
 
-//Compruebo si hay artículos inicialmente en el carrito para mostrar o no el botón finalizar compra y el mensaje de carrito vacío
+//Compruebo si hay algun filtro activo
+include 'c.buscador.php';
+
+//Compruebo si hay artículos inicialmente en el carrito para mostrar o no el total, el botón finalizar compra y el mensaje de carrito vacío
 $boton_finalizar = '';
 $mensaje_carrito = '';
+$total = '';
 
 if ($total_carrito == 0) {
-    $boton_finalizar = '';
     $mensaje_carrito = 'El carrito está vacío';
+    $boton_finalizar = '';
+    $total = '';
 } else {
-    $boton_finalizar = ' <form method="post" action="factura.php">
-                    <input type="submit" name="finalizar-compra" value="Finalizar compra" class="boton">
-                </form>';
     $mensaje_carrito = '';
+    $boton_finalizar = ' <form method="post" action="../controller/c.factura.php">
+                    <input type="submit" name="finalizar-compra" value="Finalizar compra" class="boton-comprar">
+                </form>';
+    $total = 'Total: ' . $total_carrito . '€';
 }
 
 //LÓGICA BOTONES PARA AÑADIR AL CARRITO DESDE LA TIENDA
@@ -141,23 +152,26 @@ if ($total_carrito != 0) {
 
 //OBTENER PRODUCTOS DEL CARRITO ACTUALIZADOS
 //Vuelvo a llamar a la función para obtener todos los datos del carrito y el total actualiados
-$productos_carrito = ProductoCarrito::mostrarDatosCarrito($id_usuario);
-$total_carrito = Carrito::totalCarrito($id_usuario);
+$productos_carrito = $detalle_carrito->mostrarDatosCarrito();
+$total_carrito = $detalle_carrito->totalCarrito();
 
 //Compruebo si hay  actualizaciones en el carrito para mostrar o no el botón finalizar compra
 if ($total_carrito == 0) {
-    $boton_finalizar = '';
     $mensaje_carrito = 'El carrito está vacío';
+    $boton_finalizar = '';
+    $total = '';
 } else {
-    $boton_finalizar = ' <form method="post" action="../view/c.factura.php">
+    $mensaje_carrito = '';
+    $boton_finalizar = ' <form method="post" action="../controller/c.factura.php">
                     <input type="submit" name="finalizar-compra" value="Finalizar compra" class="boton-comprar">
                 </form>';
-    $mensaje_carrito = '';
+    $total = 'Total: ' . $total_carrito . '€';
 }
-
 //MOSTRAR LA INFORMACIÓN EN LA VISTA
 
-//Llamo a la cabecera
+//Incluyo la cabecera
 include '../view/header.php';
-//Llamo a la vista de la tienda
+//Incluyo el buscador
+include '../view/buscador.php';
+//Incluyo la vista de la tienda
 include '../view/tienda.php';
