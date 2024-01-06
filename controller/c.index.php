@@ -23,27 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
-    $modo = '';
-    //Compruebo si ya hay creada una cookie para almacenar el modo
-    if (!isset($_COOKIE['modo'])) {
-        //Creo una cookie que almacena el modo día por defecto
-        setcookie('modo', $modo, time() + 2592000); // Expira en 30 días
-    }
-
-    if (isset($_GET['dia'])) {
-
-        $modo = 'dia';
-    } elseif (isset($_GET['noche'])) {
-
-        $modo = 'noche';
-    }
-    // Actualizo la cookie en caso de que haya habido cambios
-    setcookie('modo', $modo, time() + 2592000);
-}
-
 //Si no hay un sesión creada y si no se ha seleccionado una opción muestro el menú de acceso principal
 if (!isset($_SESSION['nombre'])) {
 
@@ -59,17 +38,6 @@ if (!isset($_SESSION['nombre'])) {
         }
     } else {
 
-        //Si existe la cookie del modo de navegación de mostrará una vista u otra
-        /*
-        if (
-            $_COOKIE['modo'] == 'noche'
-        ) {
-            $estilos = '<link rel="stylesheet" type="text/css" href="../assets/estilos-noche.css">';
-        } else {
-            $estilos =
-                '<link rel="stylesheet" type="text/css" href="../assets/estilos.css">';
-        }*/
-
         include '../view/acceso.php';
     }
 } else {
@@ -77,3 +45,19 @@ if (!isset($_SESSION['nombre'])) {
     //Una vez que el usuario ha iniciado sesión, paso el mando al controlador de tienda/carrito
     header('location:c.tienda.php');
 }
+
+/* METER COOKIES AQUÍ
+
+/*
+if (!isset($_SESSION['nombre'] && !isset($_COOKIE['nombre_invitado']) {
+
+    $nombre_usuario = $_POST['nombre_invitado'];
+    $carrito_invitado = array();
+    setcookie('nombre_invitado', $nombre_usuario, time() + 3600, "/");
+    setcookie('carrito_invitado', serialize($carrito_invitado), time() + 3600, "/");
+    header('location:');
+} else {
+    $nombre_usuario = $_COOKIE['nombre_invitado'];
+    $carrito_invitado = $_COOKIE['carrito_invitado'];
+}
+*/

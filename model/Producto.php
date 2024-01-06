@@ -13,6 +13,12 @@ class Producto
     private $imagen;
     private $categoria;
 
+    //SETTER para añadir id_producto a objeto producto
+    public function setIdProducto($id_producto)
+    {
+        $this->id_producto = $id_producto;
+    }
+
     //Métodos getters para obtener la información de los productos
 
     public function getIdProducto()
@@ -122,6 +128,36 @@ class Producto
             $consulta->bindValue(':texto', '%' . $texto . '%');
             $consulta->execute();
             //4. Obtengo los resultados como un array de objetos de clase Producto
+            $resultados = $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
+            return $resultados;
+        } catch (PDOException $e) {
+            return 'Error: ' . $e->getMessage();
+        } finally {
+
+            //Cierro la conexión para liberar recursos
+            if ($conexion) {
+                $conexion = null;
+            }
+        }
+    }
+
+    //Función pública para obtener el nombre y el precio de un producto por ID
+
+    public function obtenerDatosProductoPorId()
+    {
+        $id_producto = $this->id_producto;
+
+        try {
+            //Establezco conexión a BD
+            $conexion = tiendaDB::conexionDB();
+
+            $sql = 'SELECT * FROM producto WHERE id_producto=:id_producto';
+            //Preparo la consulta, uno parámetros y ejecuto
+            $consulta = $conexion->prepare($sql);
+            //Uno parámetros
+            $consulta->bindParam(':id_producto', $id_producto);
+            $consulta->execute();
+            //Obtengo los resultados como un array de objetos de clase Producto
             $resultados = $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
             return $resultados;
         } catch (PDOException $e) {
