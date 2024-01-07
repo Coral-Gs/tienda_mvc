@@ -170,4 +170,31 @@ class Producto
             }
         }
     }
+    //Función estática para obtener la imagen de un producto por ID
+    public static function obtenerImagenPorId($id_producto)
+    {
+        try {
+            //Establezco conexión a BD
+            $conexion = tiendaDB::conexionDB();
+
+            $sql = 'SELECT imagen FROM producto WHERE id_producto=:id_producto';
+            //Preparo la consulta, uno parámetros y ejecuto
+            $consulta = $conexion->prepare($sql);
+            //Uno parámetros
+            $consulta->bindParam(':id_producto', $id_producto);
+            $consulta->execute();
+            //Retorna la imagen del producto
+            while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
+                return $row['imagen'];
+            }
+        } catch (PDOException $e) {
+            return 'Error: ' . $e->getMessage();
+        } finally {
+
+            //Cierro la conexión para liberar recursos
+            if ($conexion) {
+                $conexion = null;
+            }
+        }
+    }
 }

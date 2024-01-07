@@ -30,6 +30,10 @@ class ControladorInvitado
     {
         return $this->carrito_invitado;
     }
+    public function setCarritoInvitado($carrito_invitado)
+    {
+        $this->carrito_invitado = $carrito_invitado;
+    }
 
 
     //Función para buscar producto por ID en el carrito de invitado
@@ -110,5 +114,13 @@ class ControladorInvitado
             $totalCarrito = $totalCarrito + ($precio * $cantidad);
         }
         return $totalCarrito;
+    }
+
+    //Función para vaciar el carrito
+    public function vaciarCarritoInvitado()
+    {
+        $carrito_invitado = $this->carrito_invitado;
+        $carrito_invitado = [];
+        return $carrito_invitado;
     }
 }

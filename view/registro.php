@@ -35,8 +35,8 @@ En caso de querer hacer login, hay otro formulario que redirige al controlador p
                  <label>Repite la contraseña: </label>
                  <input type="password" name="pass2" required><br><br>
                  <input type="submit" name="enviar" value="REGISTRARSE" class="boton-acceder">
-                 <a href="../view/login.php">Ya estoy registrado</a><br>
-                 <a href="../view/acceso.php">Volver</a>
+                 <a href="login.php">Ya estoy registrado</a><br>
+                 <?= $enlace_volver ?>
 
              </form>
          </div>

@@ -26,9 +26,6 @@ $nombre_usuario = $_SESSION['nombre'];
 $email = $_SESSION['email'];
 $mensaje_factura = $nombre_usuario . ', estos son los detalles de tu pedido:';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-}
-
 //Si el usuario la cierra con el botón salir se redirige a la página de acceso
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 

@@ -3,7 +3,7 @@
 
 <!--El controlador de buscador procesa la información que llega de la vista buscador
 
-Utilizo el método GET puesto que no es información sensible y de este modoo el usuario podría
+Utilizo el método GET puesto que no es información sensible y de este modo el usuario podría
 guardar la URL para futuras visitas o para compartir el enlace con otras personas. 
 Utilizo el array súperglobal de GET para saber qué categoría se ha seleccionado 
 y obtener los productos buscados con los métodos estáticos de la clase Producto-->

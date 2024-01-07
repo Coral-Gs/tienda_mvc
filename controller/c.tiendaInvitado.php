@@ -7,15 +7,21 @@ llamando a los modelos necesarios para actualizar el carrito en la BD-->
 <?php
 //Incuyo modelos y controladores que voy a utilizar
 include_once '../model/Producto.php';
-include_once 'c.ControladorInvitado.php';
+include_once 'ControladorInvitado.php';
 
-$carrito_invitado = array();
+
+//Página privada: si no hay cookies creadas redirige a la página de acceso
+if (!isset($_COOKIE['carrito_invitado']) || !isset($_COOKIE['nombre_invitado'])) {
+
+    header('location:c.index.php');
+}
 
 //Compruebo si ya hay productos en la cookie
+$carrito_invitado = array();
 if (!empty($_COOKIE['carrito_invitado'])) {
     $carrito_invitado = unserialize($_COOKIE['carrito_invitado']);
 }
-var_dump($_COOKIE['nombre_invitado']);
+
 
 //Creo un nuevo objeto de invitado y las variables que voy a necesitar
 $invitado = new ControladorInvitado($_COOKIE['nombre_invitado'], $carrito_invitado);
@@ -39,7 +45,7 @@ if (empty($carrito_invitado)) {
     $total = '';
 } else {
     $mensaje_carrito = '';
-    $boton_finalizar = ' <form method="post" action="../controller/c.factura.php">
+    $boton_finalizar = ' <form method="post" action="../controller/c.facturaInvitado.php">
                     <input type="submit" name="finalizar-compra" value="Finalizar compra" class="boton-comprar">
                 </form>';
     $total = 'Total: ' . $total_carrito . '€';
@@ -68,12 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($producto_en_carrito) {
                 $operacion = 'sumar';
                 //1.Consulto cookie, 2. Modifico cookie
-                $carrito_invitado = unserialize($_COOKIE['carrito_invitado']);
                 $carrito_invitado = $invitado->modificarCantidadProducto($id_producto, $operacion);
             } else {
                 //Si no está, añado el nuevo producto al carrito en la cookie
                 //1.Consulto cookie, 2. Modifico cookie
-                $carrito_invitado = unserialize($_COOKIE['carrito_invitado']);
                 $carrito_invitado = $invitado->agregarProductoCarrito($id_producto);
             }
         }
@@ -100,7 +104,6 @@ if ($total_carrito != 0) {
                 $operacion = 'sumar';
 
                 //1.Consulto cookie, 2. Modifico cookie
-                $carrito_invitado = unserialize($_COOKIE['carrito_invitado']);
                 $carrito_invitado = $invitado->modificarCantidadProducto($id_producto, $operacion);
 
                 //Si se ha pulsado el boton - compruebo la cantidad del producto
@@ -112,49 +115,40 @@ if ($total_carrito != 0) {
 
                     $operacion = 'restar';
                     //1.Consulto cookie, 2. Modifico cookie
-                    $carrito_invitado = unserialize($_COOKIE['carrito_invitado']);
                     $carrito_invitado = $invitado->modificarCantidadProducto($id_producto, $operacion);
 
 
                     //Si la cantidad es igual a 1 se elimina el producto
                 } else {
                     //1.Consulto cookie, 2. Modifico cookie
-                    $carrito_invitado = unserialize($_COOKIE['carrito_invitado']);
                     $carrito_invitado = $invitado->eliminarProductoCarrito($id_producto);
                 }
 
                 //Si se ha pulsado el boton 'eliminar's se elimina el producto del carrito
             } elseif (isset($_POST[$boton_eliminar])) {
                 //1.Consulto cookie, 2. Modifico cookie
-                $carrito_invitado = unserialize($_COOKIE['carrito_invitado']);
                 $carrito_invitado = $invitado->eliminarProductoCarrito($id_producto);
             }
         }
     }
 }
-echo '<pre>';
-var_dump($carrito_invitado);
-echo '</pre>';
 
+//Actualizo info carrito y cookie
 $carrito_invitado = $carrito_invitado;
 $carrito_invitado_cookie = serialize($carrito_invitado);
+setcookie('carrito_invitado', $carrito_invitado_cookie, time() + 3600 * 24 * 30, "/");
+//Actualizo total de carrito
+$invitado->setCarritoInvitado($carrito_invitado);
 $total_carrito = $invitado->totalCarritoInvitado();
-//3. Actualizo la cookie para guardar las modificaciones efectuadas en el array
-setcookie('carrito_invitado', $carrito_invitado_cookie, time() + 3600, "/");
 
-
-
-//OBTENER PRODUCTOS DEL CARRITO ACTUALIZADOS
-//Vuelvo a llamar a la función para obtener todos los datos del carrito y el total actualizados
-
-//Compruebo si hay  actualizaciones en el carrito para mostrar o no el botón finalizar compra
+//Compruebo total carrito actualizado para mostrar o no el botón finalizar compra y total
 if ($total_carrito == 0) {
     $mensaje_carrito = 'El carrito está vacío';
     $boton_finalizar = '';
     $total = '';
 } else {
     $mensaje_carrito = '';
-    $boton_finalizar = ' <form method="post" action="../controller/c.factura.php">
+    $boton_finalizar = ' <form method="post" action="../controller/c.facturaInvitado.php">
                     <input type="submit" name="finalizar-compra" value="Finalizar compra" class="boton-comprar">
                 </form>';
     $total = 'Total: ' . $total_carrito . '€';
@@ -162,5 +156,9 @@ if ($total_carrito == 0) {
 
 //MOSTRAR LA INFORMACIÓN EN LA VISTA
 
+//Incluyo la cabecera
+include_once '../view/headerInvitado.php';
+//Incluyo el buscador
+include_once '../view/buscadorInvitado.php';
 //Incluyo la vista de la tienda
-include '../view/tiendaInvitado.php';
+include_once '../view/tiendaInvitado.php';

@@ -32,8 +32,8 @@ En caso de querer registrarse, hay otro formulario que redirige al controlador d
                 <label>Contraseña: </label>
                 <input type="password" name="pass" required><br><br>
                 <input type="submit" name="submit" value="LOGIN" class="boton-acceder">
-                <a href="../view/registro.php">Registrarme</a> <br>
-                <a href="../view/acceso.php">Volver</a>
+                <a href="../controller/c.index.php">Registrarme</a> <br>
+                <?= $enlace_volver ?>
             </form>
         </div>
         <br><br>

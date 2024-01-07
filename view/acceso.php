@@ -30,12 +30,13 @@
                 <input type="submit" name="login" value="Acceder" class="boton-acceder">
                 <input type="submit" name="registro" value="Registro" class="boton-registro"><br><br>
             </form>
+            <!--El formulario redirige al controlador de acceso para acceder como invitado-->
+            <!--Validación en cliente del campo nombre de invitado: es obligatorio y solo permite letras con y sil tildes y espacios-->
+            <form method='post' action='../controller/c.index.php'>
+                <input type="text" name="nombre_invitado" placeholder="Nombre..." pattern="[a-zA-ZáéíóúüñÁÉÍÓÚÜÑ ]{1,25}" title="Solo letras y espacios hasta 25 caracteres" required>
+                <input type="submit" name="invitado" value="Acceder como invitado" class="boton-invitado">
+            </form>
         </section>
-        <!--Selección de modo claro/oscuro que se almacena en una cookie-->
-        <form method='get' action='../controller/c.index.php'>
-            <input type="submit" name="dia" value="Modo día" class="boton">
-            <input type="submit" name="noche" value="Modo noche" class="boton"><br><br>
-        </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
