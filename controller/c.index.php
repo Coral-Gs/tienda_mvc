@@ -31,12 +31,12 @@ if (!isset($_SESSION['nombre']) && isset($_COOKIE['nombre_invitado'])) {
 
         //ACCESO COMO USUARIO REGISTRADO
         if (isset($_POST['login'])) {
-            $enlace_volver = '<a href="../controller/c.tiendaInvitado.php">Volver</a>';
+            //$enlace_volver = '<a href="../controller/c.tiendaInvitado.php">Volver</a>';
             header('location:../view/login.php');
 
             //ACCESO POR REGISTRO
         } elseif (isset($_POST['registro'])) {
-            $enlace_volver = '<a href="../controller/c.tiendaInvitado.php">Volver</a>';
+            //$enlace_volver = '<a href="../controller/c.tiendaInvitado.php">Volver</a>';
             include '../view/registro.php';
         }
     }
