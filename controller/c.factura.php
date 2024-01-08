@@ -45,14 +45,20 @@ $detalle_carrito->setIdUsuario($id_usuario);
 //Obtengo los datos de los productos y el total del carrito
 $productos_carrito = $detalle_carrito->mostrarDatosCarrito();
 $total_carrito = $detalle_carrito->totalCarrito();
+$boton_finalizar = '<form method="POST" action="../controller/c.factura.php">
+            <input type="submit" name="factura" value="Finalizar compra y vaciar carrito" class="boton-finalizar">
+        </form>';
 
 //Cuando el usuario presiona "Finalizar compra y vaciar carrito" llamo a una función para vaciar el carrito
 //Con más tiempo podría haber hecho una transacción en BBDD de modo que se generase una factura al tiempo
 //que se vacía el carrito, teniendo también la tabla "factura" y su correspondiente modelo
+//Al vaciar el carrito desaparece el botón finalizar y solo queda la opción de volver a la tienda
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['factura'])) {
-        $mensaje_factura = 'Factura de  compra:';
+        $mensaje_factura = '¡Gracias por tu compra! Esta es tu factura:';
         $carrito->vaciarCarrito();
+        $boton_finalizar = '';
     }
 }
 

@@ -11,9 +11,9 @@ include_once 'ControladorInvitado.php';
 
 //MANEJO DE DATOS DE COOKIES
 
-//Página privada, si no hay cookies (o sesión iniciada para usuarios), redirige a la página de acceso
+//Página privada, si no hay cookies, redirige a la página de acceso
 if (!isset($_COOKIE['carrito_invitado'])) {
-    header('location:../view/acceso.php');
+    header('location:c.index.php');
 }
 
 //Asigno los valores de las cookies
@@ -25,15 +25,9 @@ $mensaje_factura = $nombre_usuario . ', estos son los detalles de tu pedido:';
 //Creo instancias y variables que necesito para la factura
 $invitado = new ControladorInvitado($nombre_usuario, $carrito_invitado);
 $total_carrito = $invitado->totalCarritoInvitado();
-$total = 0;
 $boton_finalizar = '<form method="POST" action="../controller/c.facturaInvitado.php">
             <input type="submit" name="factura" value="Finalizar compra y vaciar carrito" class="boton-finalizar">
         </form>';
-
-//Si el carrito no tiene nada, el total es 0 (aunqueno aparecería la opción de finalizar compra)
-if ($total_carrito != 0) {
-    $total = $total_carrito;
-}
 
 //Cuando el usuario presiona "Finalizar compra y vaciar carrito" llamo a una función para vaciar el carrito
 //y actualizo cookies
@@ -41,8 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['factura'])) {
         $mensaje_factura = '¡Gracias por tu compra! Esta es tu factura:';
         $carrito_invitado_vacio = $invitado->vaciarCarritoInvitado();
-        //Actualizo cookie y boton de finalizar
+        //Actualizo cookies y boton de finalizar
         $carrito_invitado_cookie = serialize($carrito_invitado_vacio);
+        setcookie('nombre_invitado', $nombre_usuario, time() + 3600 * 24 * 30, "/"); //Creo de nuevo la cookie de nombre_invitado para que tenga la misma duración que el carrito
         setcookie('carrito_invitado', $carrito_invitado_cookie, time() + 3600 * 24 * 30, "/");
         $boton_finalizar = '';
     }

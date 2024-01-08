@@ -2,8 +2,8 @@
 <!--VISTA DE FACTURA DE USUARIO-->
 
 <!--Vista para acceder a la factura una vez el usuario decide finalizar compra-->
-
-<h2 class="mensaje-factura"><?= $mensaje_factura ?></h2>
+<br><br>
+<h3 class="mensaje-factura"><?= $mensaje_factura ?></h3>
 <!--Muestro los datos del carrito en forma de factura de compra-->
 <div class="contenedor-factura">
     <div class="factura">

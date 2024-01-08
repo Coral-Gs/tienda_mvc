@@ -16,6 +16,19 @@ if (!isset($_COOKIE['carrito_invitado']) || !isset($_COOKIE['nombre_invitado']))
     header('location:c.index.php');
 }
 
+//Si el usuario selecciona el botón acceser o registro, le redirige al formulario correspondiente
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    //ACCESO COMO USUARIO REGISTRADO
+    if (isset($_POST['login'])) {
+        header('location:c.login.php');
+
+        //ACCESO POR REGISTRO
+    } elseif (isset($_POST['registro'])) {
+        header('location:c.registro.php');
+    }
+}
+
 //Compruebo si ya hay productos en la cookie
 $carrito_invitado = array();
 if (!empty($_COOKIE['carrito_invitado'])) {

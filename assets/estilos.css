@@ -32,7 +32,7 @@
 
 #logo {
   display: inline;
-  margin-left: 150px;
+  margin-left: 230px;
 }
 /*Estilos acceso.php*/
 
@@ -201,6 +201,33 @@
 
 .boton-finalizar:hover {
   background-color: #79450a;
+  transition-duration: 0.2s;
+}
+
+.boton-acceder-invitado {
+  color: #fff;
+  background-color: #f38b12;
+  border-radius: 5px;
+  border-style: none;
+  padding: 10px 20px;
+}
+.boton-acceder-invitado:hover {
+  background-color: #491b1b;
+  transition-duration: 0.2s;
+}
+
+.boton-registro-invitado {
+  color: #491b1b;
+  background-color: #fff;
+  border-color: #491b1b;
+  border-radius: 5px;
+  border-style: solid;
+  padding: 10px 20px;
+}
+
+.boton-registro-invitado:hover {
+  color: #fff;
+  background-color: #491b1b;
   transition-duration: 0.2s;
 }
 

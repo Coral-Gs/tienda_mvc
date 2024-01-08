@@ -13,7 +13,7 @@ session_start();
 include_once '../model/Producto.php';
 include_once '../model/Carrito.php';
 
-//Si el usuario la cierra la sesión con el botón salir se redirige a la página de acceso
+//Si el usuario cierra la sesión se redirige a la página de acceso principal
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['salir'])) {
@@ -27,22 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //Si no hay sesión creada pero hay cookies de invitado, redirige al controlador de tiendaInvitado
 if (!isset($_SESSION['nombre']) && isset($_COOKIE['nombre_invitado'])) {
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-        //ACCESO COMO USUARIO REGISTRADO
-        if (isset($_POST['login'])) {
-            //$enlace_volver = '<a href="../controller/c.tiendaInvitado.php">Volver</a>';
-            header('location:../view/login.php');
-
-            //ACCESO POR REGISTRO
-        } elseif (isset($_POST['registro'])) {
-            //$enlace_volver = '<a href="../controller/c.tiendaInvitado.php">Volver</a>';
-            header('location:../c.registro.php');
-        }
-    }
 
     header('location:c.tiendaInvitado.php');
-
 
 
     //USUARIO SIN SESIÓN INICIADA NI COOKIES

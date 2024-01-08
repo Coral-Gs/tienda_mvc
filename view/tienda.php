@@ -20,7 +20,6 @@
                             <?= $producto->getNombre() ?><br>
                             <?= $producto->getPrecio() ?> €<br>
                             <input type="submit" name="comprar<?= $producto->getIdProducto() ?>" value="Añadir al carrito" class="boton-comprar">
-                            <input type="submit" name="detalle<?= $producto->getIdProducto() ?>" value="Detalle" class="boton-detalle">
                         </form>
                     </div>
                 </div>

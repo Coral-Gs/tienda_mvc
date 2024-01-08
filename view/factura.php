@@ -2,8 +2,8 @@
 <!--VISTA DE FACTURA DE USUARIO-->
 
 <!--Vista para acceder a la factura una vez el usuario decide finalizar compra-->
-
-<h2 class="mensaje-factura"><?= $mensaje_factura ?></h2>
+<br><br>
+<h3 class="mensaje-factura"><?= $mensaje_factura ?></h3>
 <!--Muestro los datos del carrito en forma de factura de compra-->
 <div class="contenedor-factura">
     <div class="factura">
@@ -31,14 +31,14 @@
     </div>
     <div class="formulario-factura">
         <!--Formulario para generar factura y vaciar el carrito-->
-        <form method="POST" action="../controller/c.factura.php">
-            <input type="submit" name="factura" value="Finalizar compra y vaciar carrito" class="boton-finalizar">
-        </form>
+        <?= $boton_finalizar ?>
         <!--Formulario para volver a la página inicial después de comprar-->
         <form method="POST" action="../controller/c.tienda.php">
             <input type="submit" name="seguir_compra" value="Seguir comprando" class="boton-seguir">
         </form>
     </div>
+    <br><br>
+
 </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
