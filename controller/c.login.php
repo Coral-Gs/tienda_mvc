@@ -25,8 +25,17 @@ if (!isset($_SESSION['nombre'])) {
 if (!isset($_SESSION['email'])) {
     $_SESSION['email'] = null;
 }
-if (!isset($_SESSION['pass'])) {
-    $_SESSION['pass'] = null;
+
+
+//Creo array de mensajes al usuario y enlace de volver
+$mensajes = array();
+$enlace_volver = '';
+
+//Si exiten cookies, el enlace 'volver' regirige a la tienda
+if (!empty($_COOKIE['nombre_invitado'])) {
+    $enlace_volver = '<a href="c.tiendaInvitado.php">Volver</a>';
+} else {
+    $enlace_volver = '<a href="c.index.php">Volver</a>';
 }
 
 //Si se ha enviado el formulario y he recibido los datos por POST
@@ -35,41 +44,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['submit'])) {
 
         $email = $_POST['email'];
-        $pass = $_POST['pass'];
+        $contrasenia = $_POST['pass'];
 
         //Valido si los campos de email y password están vacíos
-        if (!empty($email) && !empty($pass)) {
-            //Creo un objeto de usuario
-            $usuario = new Usuario();
+        if (!empty($email) && !empty($contrasenia)) {
 
-            //Busco el usuario y el hash asociado a su contraseña
-            $hash_BD = $usuario->buscarUsuarioHash($email);
-
-            //Compruebo que la contraseña introducida coincide con el hash asignado
-            $datos_validos = $usuario->coincideContraseniaHash($pass, $hash_BD);
+            //Compruebo que la contraseña introducida coincide con el hash asignado según el email
+            $datos_validos = Usuario::comprobarContraseniaHash($contrasenia, $email);
 
             if ($datos_validos) {
 
-                //Si la contraseña es correcta, obtengo los datos del usuario mediante su email
-                //llamando a la función estática mostrarDatosUsuario();
-                //Recorro datos de usuario y asigno a variables globables de sesión
+                //Si la contraseña es correcta recorro datos de usuario y asigno a variables globables de sesión
                 $datos_usuario = Usuario::mostrarDatosUsuario($email);
                 foreach ($datos_usuario as $dato) {
-                    $_SESSION['nombre'] = $dato->getNombreUsuario();
                     $_SESSION['id_usuario'] = $dato->getIdUsuario();
+                    $_SESSION['nombre'] = $dato->getNombreUsuario();
+                    $_SESSION['email'] = $dato->getEmail();
                 }
-                $_SESSION['email'] = $email;
-                $_SESSION['pass'] = $pass;
-
                 header('location:c.index.php');
             } else {
                 //De lo contrario, lanzo un mensaje de error
-                include '../view/login.php';
-                echo '<div style="text-align:center"><strong>¡El usuario o la contraseña no son válidos!</strong</div>';
+                $mensajes[] = '¡El usuario o la contraseña no son válidos!';
             }
-        } else if (empty($email) && empty($pass)) {
-            include '../view/login.php';
-            echo '<div style="text-align:center"><strong>¡Por favor, introduce tu email y contraseña!</strong</div>';
+        } else if (empty($email) && empty($contrasenia)) {
+            $mensajes[] = '¡Por favor, introduce tu email y contraseña!';
         }
     }
 }
+
+//MUESTRO LA INFORMACIÓN EN LA VISTA EN CASO DE QUE HAYA HABIDO ALGÚN ERROR
+//Si el proceso se ha completado correctamente, se habría redirigido a c.index.php');
+
+include '../view/login.php';

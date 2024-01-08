@@ -32,11 +32,20 @@ En caso de querer registrarse, hay otro formulario que redirige al controlador d
                 <label>Contraseña: </label>
                 <input type="password" name="pass" required><br><br>
                 <input type="submit" name="submit" value="LOGIN" class="boton-acceder">
-                <a href="../controller/c.index.php">Registrarme</a> <br>
+                <a href="../controller/c.registro.php">Registrarme</a> <br>
                 <?= $enlace_volver ?>
             </form>
         </div>
-        <br><br>
+        <div class="contenedor-mensajes">
+            <ul>
+                <?php
+                foreach ($mensajes as $mensaje) : ?>
+                    <li>
+                        <?php echo $mensaje ?>
+                    </li>
+                <?php endforeach ?>
+            </ul>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>

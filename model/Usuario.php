@@ -1,7 +1,7 @@
 <?php
-//Incluyo la clase de conexión a la BD y la clase producto
+//Incluyo la clase de conexión a la BD
 require_once 'TiendaDB.php';
-require_once 'Producto.php';
+require_once 'ControladorUsuario.php';
 
 class Usuario
 {
@@ -37,7 +37,8 @@ class Usuario
     }
 
 
-    //Función pública estática para obtener los datos de un usuario
+    //Función pública estática para obtener los datos de un usuario. 
+    //Devuelve la fila como un objeto Usuario y puedo acceder a los datos con los Getters
 
     public static function mostrarDatosUsuario($email)
 
@@ -103,8 +104,9 @@ class Usuario
 
     //Función estática para registrar nuevo usuario a la BD usuarios. 
     //Toma por parámetros el nombre, email y la contraseña previamente validados
-    public static function crearUsuario($nombre, $email, $hash)
+    public static function crearUsuario($nombre, $email, $contrasenia)
     {
+        $hash = ControladorUsuario::hashContrasenia($contrasenia);
 
         try {
             //Conexión a BD
@@ -135,7 +137,7 @@ class Usuario
         }
     }
 
-    //Función estática para obtener ID de invitado mediante su email
+    //Función estática para obtener ID de usuario mediante su email
     public static function buscarIdUsuario($email)
     {
 
@@ -167,9 +169,11 @@ class Usuario
         }
     }
 
-
-    public function buscarUsuarioHash($email)
+    //Función estática para comprobar si la contraseña que ha introducido el usuario
+    //Concuerda con el hash asociado en la BD, según el email introducido
+    public static function comprobarContraseniaHash($contrasenia, $email)
     {
+        $usuarioHash = '';
         try {
             //Conexión a BD
             $conexion = TiendaDB::conexionDB();
@@ -181,9 +185,9 @@ class Usuario
             $consulta->bindParam(':email', $email);
             //3. Ejecuta la consulta
             $consulta->execute();
-            //4. Retorna el hash de contraseña del usuario buscado
+            //4. Recupera el hash de contraseña del usuario buscado en la BD
             while ($row = $consulta->fetch(PDO::FETCH_ASSOC)) {
-                return $row['contrasenia'];
+                $usuarioHash = $row['contrasenia'];
             }
         } catch (PDOException $e) {
             echo 'Error: ' . $e->getMessage();
@@ -193,6 +197,12 @@ class Usuario
             if ($conexion) {
                 $conexion = null;
             }
+        }
+        //Verifica si la contraseña introducida concuerda con el hash asociado en la BD
+        if (password_verify($contrasenia, $usuarioHash)) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

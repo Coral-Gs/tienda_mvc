@@ -15,17 +15,14 @@
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-12 col-lg-12" id="header">
-                <img src="../assets/logo_claro.png" width="200" />
+            <div class="col-sm-12 col-lg-10" id="header-logged">
+                <img src="../assets/logo_claro.png" width="200" id='logo' />
             </div>
-        </div>
-        <div class="row" id="menu">
-            <div class="col-sm-10 col-lg-10" id="mensaje-inicial">
-                <h4>¡Bienvenid@, <?= $nombre_usuario ?>!</h4>
-            </div>
-            <div class="col-sm-2 col-lg-2">
+            <div class="col-sm-12 col-lg-2" id="menu">
+                <img src="../assets/user.png" id="icono-usuario" />
+                <h4 id="mensaje-inicial">¡Hola, <?= $nombre_usuario ?>!</h4>
                 <!--Formulario para cerrar la sesión de usuario-->
-                <form method='post' action='../controller/c.index.php'>
+                <form method='post' action='../controller/c.index.php' id="boton">
                     <input type="submit" name="salir" value="Cerrar sesión" class="boton-salir">
                 </form>
             </div>

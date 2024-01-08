@@ -15,24 +15,26 @@ include_once '../model/Carrito.php';
 include_once '../model/Producto.php';
 
 //MANEJO DE DATOS DE SESIÓN EN TIENDA
-
-//Página privada, si no hay sesión iniciada, redirige a la página de acceso
+//Página privada, si no hay sesión iniciada, redirige al controlador de acceso
 if (!isset($_SESSION['id_usuario'])) {
-    header('location:../view/acceso.php');
+    header('location:../controller/c.index.php');
 }
 
 //Asigno los valores de la sesión a id usuario y nombre usuario
 $id_usuario = $_SESSION['id_usuario'];
 $nombre_usuario = $_SESSION['nombre'];
 
-//Si el usuario la cierra con el botón salir se redirige a la página de acceso
+
+
+//Si el usuario la cerrar sesión, se destruye la sesión y redirige al controlador de acceso
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['salir'])) {
 
         session_destroy();
-        header('location:../view/acceso.php');
+        header('location:../controller/c.index.php');
     }
+    //Si el usuario selecciona 'finalizar compra' se redirige al controlador de factura
     if (isset($_POST['finalizar-compra'])) {
 
         header('location:c.factura.php');

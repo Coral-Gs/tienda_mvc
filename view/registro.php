@@ -35,12 +35,21 @@ En caso de querer hacer login, hay otro formulario que redirige al controlador p
                  <label>Repite la contraseña: </label>
                  <input type="password" name="pass2" required><br><br>
                  <input type="submit" name="enviar" value="REGISTRARSE" class="boton-acceder">
-                 <a href="login.php">Ya estoy registrado</a><br>
+                 <a href="../controller/c.login.php">Ya estoy registrado</a><br>
                  <?= $enlace_volver ?>
 
              </form>
          </div>
-         <br><br>
+         <div class="contenedor-mensajes">
+             <ul>
+                 <?php
+                    foreach ($mensajes as $mensaje) : ?>
+                     <li>
+                         <?php echo $mensaje ?>
+                     </li>
+                 <?php endforeach ?>
+             </ul>
+         </div>
      </div>
      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
  </body>

@@ -5,8 +5,34 @@
   text-align: center;
 }
 
+#header-logged {
+  background-color: #fdf7f2;
+  padding: 10px;
+  text-align: center;
+}
+
 #menu {
-  margin: 20px 10px;
+  background-color: #fdf7f2;
+  text-align: left;
+  padding-top: 20px;
+}
+#mensaje-inicial {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+#icono-usuario,
+#mensaje-inicial {
+  display: inline-block;
+}
+
+#icono-usuario {
+  width: 20px;
+  padding-bottom: 8px;
+}
+
+#logo {
+  display: inline;
+  margin-left: 150px;
 }
 /*Estilos acceso.php*/
 
@@ -32,6 +58,14 @@
   text-align: left;
 }
 
+.contenedor-mensajes {
+  padding: 40px 40px 20px 20px;
+  margin: 0 auto;
+  margin-top: 20px;
+  max-width: fit-content;
+  text-align: left;
+}
+
 /*Estilos botones*/
 
 .boton-acceder {
@@ -42,6 +76,11 @@
   padding: 10px 50px;
   margin: 10px;
 }
+.boton-acceder:hover {
+  background-color: #491b1b;
+  transition-duration: 0.2s;
+}
+
 .boton-registro {
   color: #491b1b;
   background-color: #fff;
@@ -50,11 +89,6 @@
   border-style: solid;
   padding: 10px 50px;
   margin: 10px;
-}
-
-.boton-acceder:hover {
-  background-color: #491b1b;
-  transition-duration: 0.2s;
 }
 
 .boton-registro:hover {
@@ -178,19 +212,25 @@
 
 .cabecera-carrito {
   background-color: #79450a;
-  border-radius: 0.5em 0.5em 0 0;
+  border-radius: 0.2em 0.2em 0 0;
   color: #fff;
   font-size: 20px;
   padding: 10px 20px;
   text-align: center;
+  width: 100%;
 }
 
 #contenedor-carrito {
   text-align: center;
+  margin-top: 30px;
+  border-style: solid;
+  border-radius: 0.5em;
+  border-color: #dad7d7;
+  padding: 0;
 }
 
 #contenedor-tienda {
-  margin: 30px;
+  margin: 30px 0 10px 0;
 }
 
 #contenedor-producto {
@@ -225,7 +265,7 @@
 
 #buscador {
   text-align: center;
-  margin: 10px;
+  margin-top: 30px;
 }
 
 .filtro {

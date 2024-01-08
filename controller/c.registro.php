@@ -26,7 +26,20 @@ if (!isset($_SESSION['id_usuario'])) {
     $_SESSION['id_usuario'] = null;
 }
 
+//Creo array de mensajes al usuario y enlace de volver
+$mensajes = array();
+$enlace_volver = '';
+
+//Si exiten cookies, el enlace 'volver' regirige a la tienda
+if (!empty($_COOKIE['nombre_invitado'])) {
+    $enlace_volver = '<a href="c.tiendaInvitado.php">Volver</a>';
+} else {
+    $enlace_volver = '<a href="../view/acceso.php">Volver</a>';
+}
+
 //Compruebo si se ha enviado el formulario por POST y creo variables
+//En cada comprobación almaceno los mensajes de error en el array $mensajes que me devuelven las funciones
+//para mostrarlos al usuario en la vista
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['enviar'])) {
@@ -40,73 +53,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //Compruebo si el nombre se ha enviado y es válido
 
         if (empty($nombre)) {
-            include '../view/registro.php';
-            echo 'Debes introducir un nombre';
-        } elseif (!empty($nombre) && (!ControladorUsuario::nombreValido($nombre))) {
-            include '../view/registro.php';
-            echo '<div style="text-align:center"><strong>El nombre no puede contener números ni caracteres especiales.</strong></div>';
+            $mensajes[] = 'Debes introducir un nombre';
         } else {
-
-            if (empty($email)) {
-
-                include '../view/registro.php';
-                echo 'Debes introducir un email.';
-            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-
-                include '../view/registro.php';
-                echo 'Debes introducir un email válido con el formato email@email.com';
-
-                //Si es así, compruebo si ya existe el usuario en la BD
+            $nombreValido = ControladorUsuario::validarNombre($nombre);
+            if ($nombreValido !== true) {
+                $mensajes = array_merge($mensajes, $nombreValido);
             } else {
 
-                $existe_usuario = Usuario::buscarUsuario($email);
+                //Si el nombre es válido, compruebo el email si se ha enviado y es válido
 
-                if ($existe_usuario) {
-                    //Si existe lanzo mensaje de error
-                    include '../view/registro.php';
-                    echo '<div style="text-align:center"><strong>Ya existe un usuario con el email ' . $email . '</strong></div>';
+                if (empty($email)) {
+                    $mensajes[] = 'Debes introducir un email.';
+                } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $mensajes[] =  'Debes introducir un email válido con el formato email@email.com';
+
+                    //Si es así, compruebo si ya existe el usuario en la BD
                 } else {
-                    //Si no existe, valido contraseña
 
-                    if (!empty($pass1) && !empty($pass2)) {
+                    $existe_usuario = Usuario::buscarUsuario($email);
 
-                        $contrasenia_valida = ControladorUsuario::contraseniaValida($pass1);
-                        $contrasenias_iguales = ControladorUsuario::compararContrasenias($pass1, $pass2);
-
-                        if ($contrasenia_valida && $contrasenias_iguales) {
-                            //Si la contraseña es válida y coincide se ejecuta el registro en la BD
-                            //utilizando la función PASSWORD_HASH de PHP para  encriptar la contraseña
-
-                            $hash_contrasenia = ControladorUsuario::hashContrasenia($pass1);
-                            Usuario::crearUsuario($nombre, $email, $hash_contrasenia);
-
-                            //Se asignan los valores a la sesión
-                            //Y se redirige al controlador principal index
-                            $_SESSION['nombre'] = $nombre;
-                            $_SESSION['email'] = $email;
-                            $_SESSION['id_usuario'] = Usuario::buscarIdUsuario($email);
-                            header('location:c.index.php');
-                        } elseif (!$contrasenia_valida) {
-                            include '../view/registro.php';
-                            echo '
-                                    <h4>La contraseña debe contener:</h4>
-                                    <ul>    
-                                        <li>Letras y números</li>
-                                        <li>Al menos una mayúscula</li>
-                                        <li>Entre 8 y 10 caracteres</li>
-                                        <li>Al menos un caracter especial ._-^()#!</li>
-                                    </ul>
-                                ';
-                        } elseif (!$contrasenias_iguales) {
-                            include '../view/registro.php';
-                            echo '<div style="text-align:center"><strong>¡Las contraseñas deben coincidir!</strong></div>';
-                        }
+                    if ($existe_usuario) {
+                        //Si existe lanzo mensaje de error
+                        $mensajes[] = 'Ya existe un usuario con el email ' . $email . '.';
                     } else {
-                        include '../view/registro.php';
-                        echo '<div style="text-align:center"><strong>Debes introducir una contraseña</strong></div>';
+                        //Si no existe, valido contraseña
+
+                        if (!empty($pass1) && !empty($pass2)) {
+
+                            $contrasenia_valida = ControladorUsuario::validarContrasenia($pass1);
+                            $contrasenias_iguales = ControladorUsuario::compararContrasenias($pass1, $pass2);
+
+                            if ($contrasenia_valida === true && $contrasenias_iguales) {
+                                //Si la contraseña es válida y coincide ejecuta el registro en la BD
+                                //utilizando la función PASSWORD_HASH de PHP para  encriptar la contraseña
+                                Usuario::crearUsuario($nombre, $email, $pass1);
+
+                                //Se asignan los valores a la sesión
+                                //Y se redirige al controlador principal index
+                                $_SESSION['nombre'] = $nombre;
+                                $_SESSION['email'] = $email;
+                                $_SESSION['id_usuario'] = Usuario::buscarIdUsuario($email);
+                                header('location:c.index.php');
+                            } elseif ($contrasenia_valida !== true) {
+                                //Almaceno los mensajes de error que me devuelve la función de validarContrasenia
+                                //junto con los que pueda haber del resto de validaciones
+
+                                $mensajes = array_merge($mensajes, $contrasenia_valida);
+                            } elseif (!$contrasenias_iguales) {
+                                $mensajes[] = '¡Las contraseñas deben coincidir!';
+                            }
+                        } else {
+                            $mensajes[] = 'Debes introducir una contraseña';
+                        }
                     }
                 }
             }
         }
     }
 }
+
+//MUESTRO LA INFORMACIÓN EN LA VISTA EN CASO DE QUE HAYA HABIDO ALGÚN ERROR
+//Si el proceso se ha completado correctamente, se habría redirigido a c.index.php');
+
+include '../view/registro.php';

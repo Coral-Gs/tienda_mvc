@@ -37,7 +37,7 @@ if (!isset($_SESSION['nombre']) && isset($_COOKIE['nombre_invitado'])) {
             //ACCESO POR REGISTRO
         } elseif (isset($_POST['registro'])) {
             //$enlace_volver = '<a href="../controller/c.tiendaInvitado.php">Volver</a>';
-            include '../view/registro.php';
+            header('location:../c.registro.php');
         }
     }
 
@@ -53,13 +53,11 @@ if (!isset($_SESSION['nombre']) && isset($_COOKIE['nombre_invitado'])) {
 
         //ACCESO COMO USUARIO REGISTRADO
         if (isset($_POST['login'])) {
-            $enlace_volver = '<a href="../view/acceso.php">Volver</a>';
-            include '../view/login.php';
+            header('location:c.login.php');
 
             //ACCESO POR REGISTRO
         } elseif (isset($_POST['registro'])) {
-            $enlace_volver = '<a href="../view/acceso.php">Volver</a>';
-            include '../view/registro.php';
+            header('location:c.registro.php');
 
             //ACCESO INVITADO
         } elseif (isset($_POST['invitado']) && !isset($_COOKIE['nombre_invitado'])) {
