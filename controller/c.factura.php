@@ -2,22 +2,22 @@
 <!--CONTROLADOR DE FACTURA-->
 
 
-<!--El controlador de factura procesa la información que llega de la vista de factura-->
+<!--El controlador de factura muestra en la vista la información que obtiene de los modelos 
+y procesa la información que llega de la vista de factura-->
 
 <?php
 
 //Inicio la sesión
 session_start();
 
-//Incuyo modelos que voy a utilizar
+//Incuyo modelo que voy a utilizar
 include_once '../model/Carrito.php';
-include_once '../model/Producto.php';
 
 //MANEJO DE DATOS DE SESIÓN
 
 //Página privada, si no hay sesión iniciada, redirige a la página de acceso
 if (!isset($_SESSION['id_usuario'])) {
-    header('location:../view/acceso.php');
+    header('location:c.index.php');
 }
 
 //Asigno los valores de la sesión a id usuario y nombre usuario e inicializo otras variables
@@ -25,16 +25,6 @@ $id_usuario = $_SESSION['id_usuario'];
 $nombre_usuario = $_SESSION['nombre'];
 $email = $_SESSION['email'];
 $mensaje_factura = $nombre_usuario . ', estos son los detalles de tu pedido:';
-
-//Si el usuario la cierra con el botón salir se redirige a la página de acceso
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    if (isset($_POST['salir'])) {
-
-        session_destroy();
-        header('location:../view/acceso.php');
-    }
-}
 
 //Creo instancias y variables que necesito para la factura
 $carrito = new Carrito();
@@ -52,6 +42,7 @@ $boton_finalizar = '<form method="POST" action="../controller/c.factura.php">
 //Cuando el usuario presiona "Finalizar compra y vaciar carrito" llamo a una función para vaciar el carrito
 //Con más tiempo podría haber hecho una transacción en BBDD de modo que se generase una factura al tiempo
 //que se vacía el carrito, teniendo también la tabla "factura" y su correspondiente modelo
+
 //Al vaciar el carrito desaparece el botón finalizar y solo queda la opción de volver a la tienda
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -65,9 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //MOSTRAR LA INFORMACIÓN EN LA VISTA
 
 //Llamo a la cabecera
-include '../view/header.php';
+include_once '../view/header.php';
 //Llamo a la factura
-include '../view/factura.php'
+include_once '../view/factura.php'
 
 
 ?>

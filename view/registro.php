@@ -2,8 +2,8 @@
  <!--VISTA DE REGISTRO DE USUARIO-->
 
  <!--Vista para registrarse como nuevo usuario que luego muestra a la tienda
-El formulario regirige al controlador principal para procesar la información.
-En caso de querer hacer login, hay otro formulario que redirige al controlador principal-->
+El formulario regirige al controlador de registro para procesar la información.
+En caso de querer hacer login, hay un enlace al controlador de login-->
  <!DOCTYPE html>
  <html lang="en">
 

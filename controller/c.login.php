@@ -3,15 +3,14 @@
 
 <?php
 //El controlador de login valida y procesa los datos del formulario que viene de la vista de usuario view/login.php
-//Después devuelve la vista correspondiente
+//Después devuelve la vista correspondiente, es decir, de nuevo la vista de login con errores si hay fallos
+//en el proceso de autenticación o, si accede con éxito, redirige al controlador de tienda para mostrar la vista de tienda.
 
 //Iniciamos la sesión de usuario
 session_start();
 
-//Incluyo el modelo Usuario.php y Producto.php para poder usar sus funciones
+//Incluyo los modelos que voy a necesitar
 include_once '../model/Usuario.php';
-include_once '../model/Producto.php';
-
 
 //Creo variables globales de sesión 
 if (!isset($_SESSION['id_usuario'])) {
@@ -26,12 +25,11 @@ if (!isset($_SESSION['email'])) {
     $_SESSION['email'] = null;
 }
 
-
 //Creo array de mensajes al usuario y enlace de volver
 $mensajes = array();
 $enlace_volver = '';
 
-//Si exiten cookies, el enlace 'volver' regirige a la tienda de invitado, si no, al acceso principal
+//Si exiten cookies, el enlace 'volver' del formulario redirige a la tienda de invitado, si no, al acceso principal
 if (!empty($_COOKIE['nombre_invitado'])) {
     $enlace_volver = '<a href="invitado/c.tiendaInvitado.php">Volver</a>';
 } else {
@@ -49,19 +47,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //Valido si los campos de email y password están vacíos
         if (!empty($email) && !empty($contrasenia)) {
 
-            //Compruebo que la contraseña introducida coincide con el hash asignado según el email
+            //Compruebo que la contraseña introducida coincide con el hash asignado en BD, según el email
             $datos_validos = Usuario::comprobarContraseniaHash($contrasenia, $email);
 
             if ($datos_validos) {
 
-                //Si la contraseña es correcta recorro datos de usuario y asigno a variables globables de sesión
+                //Si el email y la contraseña son correctos, recorro datos de usuario y asigno a variables globables de sesión
                 $datos_usuario = Usuario::mostrarDatosUsuario($email);
                 foreach ($datos_usuario as $dato) {
                     $_SESSION['id_usuario'] = $dato->getIdUsuario();
                     $_SESSION['nombre'] = $dato->getNombreUsuario();
                     $_SESSION['email'] = $dato->getEmail();
                 }
-                header('location:c.index.php');
+                //Toma el mando el controlador de tienda para mostrarle los datos y vista de la tienda
+                header('location:c.tienda.php');
             } else {
                 //De lo contrario, lanzo un mensaje de error
                 $mensajes[] = '¡El usuario o la contraseña no son válidos!';
@@ -73,6 +72,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 //MUESTRO LA INFORMACIÓN EN LA VISTA EN CASO DE QUE HAYA HABIDO ALGÚN ERROR
-//Si el proceso se ha completado correctamente, se habría redirigido a c.index.php');
+//Si el proceso se ha completado correctamente, se habría redirigido al usuario a c.tienda.php
 
-include '../view/login.php';
+include_once '../view/login.php';

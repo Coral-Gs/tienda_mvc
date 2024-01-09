@@ -1,13 +1,13 @@
 <!--PROYECTO EXAMEN DESARROLLO ENTORNO SERVIDOR - TIENDA ONLINE - CORAL GUTIÉRREZ SÁNCHEZ-->
 <!--CLASE CONTROLADOR USUARIO
 
-La clase controladorUsuario contiene funciones para validar los datos de registro del usuario-->
+La clase ControladorUsuario contiene funciones para validar los datos de registro del usuario-->
 
 <?php
 
 class ControladorUsuario
 {
-    //Función para validar si el nombre solo contiene caracteres permitidos y mínimo 2 caracteres y máximo 25
+    //Función para validar si el nombre solo contiene caracteres permitidos, mínimo 2 caracteres y máximo 25
 
     public static function validarNombre($nombre)
     {
@@ -34,8 +34,9 @@ class ControladorUsuario
     //Verifica si contiene letras, números, al menos una mayúscula y un caracter especial
     public static function validarContrasenia($pass)
     {
-        $mensajes_error = []; //Creo array para almacenar mensajes de error
-        $pass = trim($pass); //Elimino espacios en blanco
+        $mensajes_error = []; //Array para almacenar mensajes de error
+        $pass = trim($pass); //Elimina espacios en blanco
+
         //Comprueba si la contraseña tiene entre 8 y 10 caracteres (ambos incluidos)
         if (strlen($pass) < 8 || strlen($pass) > 10) {
 
@@ -55,7 +56,7 @@ class ControladorUsuario
             $mensajes_error[] = 'La contraseña debe contener al menos un caracter especial ._-^#!';
         }
 
-        //Retorno mensajes de error si hay alguno
+        //Retorna mensajes de error si hay alguno
         if (!empty($mensajes_error)) {
             return $mensajes_error;
         }

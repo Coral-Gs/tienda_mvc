@@ -1,7 +1,7 @@
 <!--PROYECTO EXAMEN DESARROLLO ENTORNO SERVIDOR - TIENDA ONLINE - CORAL GUTIÉRREZ SÁNCHEZ-->
-<!--VISTA DE FACTURA DE USUARIO-->
+<!--VISTA DE FACTURA DE INVITADO-->
 
-<!--Vista para acceder a la factura una vez el usuario decide finalizar compra-->
+<!--Vista para acceder a la factura una vez el invitado decide finalizar compra-->
 <br><br>
 <h3 class="mensaje-factura"><?= $mensaje_factura ?></h3>
 <!--Muestro los datos del carrito en forma de factura de compra-->

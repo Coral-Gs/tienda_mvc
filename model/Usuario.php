@@ -1,5 +1,10 @@
+<!--PROYECTO EXAMEN DESARROLLO ENTORNO SERVIDOR - TIENDA ONLINE - CORAL GUTIÉRREZ SÁNCHEZ-->
+<!--MODELO USUARIO-->
+
+<!--Modelo Usuario maneja todas las operaciones relacionadas con la tabla Usuario en la BD-->
+
 <?php
-//Incluyo la clase de conexión a la BD
+//Incluyo la clase de conexión a la BD y la clase ControladorUsuario
 require_once 'TiendaDB.php';
 require_once 'ControladorUsuario.php';
 

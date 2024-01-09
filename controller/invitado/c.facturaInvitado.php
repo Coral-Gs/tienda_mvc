@@ -1,7 +1,9 @@
 <!--PROYECTO EXAMEN DESARROLLO ENTORNO SERVIDOR - TIENDA ONLINE - CORAL GUTIÉRREZ SÁNCHEZ-->
 <!--CONTROLADOR DE FACTURA INVITADO-->
 
-<!--El controlador de factura procesa la información que llega de la vista de factura-->
+<!--El controlador de facturaInvitado procesa la información que recibe de los formularios de la vista,
+recoge la información de la cookie carrito_invitado mediante funciones de ControladorInvitado
+y muestra los datos en la vista de facturaInvitado-->
 
 <?php
 
@@ -10,11 +12,12 @@ include_once '../../model/Producto.php';
 include_once 'ControladorInvitado.php';
 
 //MANEJO DE DATOS DE COOKIES
+//Página privada: si no hay cookies creadas redirige a la página de acceso
+if (!isset($_COOKIE['carrito_invitado']) || !isset($_COOKIE['nombre_invitado'])) {
 
-//Página privada: si no hay cookies, redirige a la página de acceso
-if (!isset($_COOKIE['carrito_invitado'])) {
     header('location:../c.index.php');
 }
+
 
 //Asigno los valores de las cookies
 $nombre_usuario = $_COOKIE['nombre_invitado'];
@@ -29,8 +32,8 @@ $boton_finalizar = '<form method="POST" action="../../controller/invitado/c.fact
             <input type="submit" name="factura" value="Finalizar compra y vaciar carrito" class="boton-finalizar">
         </form>';
 
-//Cuando el usuario presiona "Finalizar compra y vaciar carrito" llamo a una función para vaciar el carrito
-//y actualizo cookies
+//Cuando el usuario presiona "Finalizar compra y vaciar carrito" 
+//llamo a una función para vaciar el carrito y actualizo cookies
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['factura'])) {
         $mensaje_factura = '¡Gracias por tu compra! Esta es tu factura:';

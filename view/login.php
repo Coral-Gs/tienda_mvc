@@ -2,8 +2,9 @@
 <!--VISTA DE LOGIN DE USUARIO-->
 
 <!--Vista para acceder a la tienda mediante login para usuarios ya registrados
-El formulario regirige al controlador controller/login.php para procesar la información.
-En caso de querer registrarse, hay otro formulario que redirige al controlador de acceso-->
+El formulario regirige al controlador de login para procesar la información.
+En caso de querer registrarse, hay un enlace al controlador de registro-->
+
 <!DOCTYPE html>
 <html lang="en">
 

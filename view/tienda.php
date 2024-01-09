@@ -2,7 +2,7 @@
 <!--VISTA DE TIENDA-->
 
 <!--MUESTRA DE PRODUCTOS-->
-<!--Envía datos al controlador de carrito c.tienda.php-->
+<!--Envía datos al controlador de tienda c.tienda.php-->
 
 <div class="row">
     <h3 class="categoria-productos"><?php echo $titulo_tienda ?></h3>
@@ -50,6 +50,7 @@
                 </div>
             </form>
         <?php endforeach;
+        //Muestra total y botón finalizar
         echo '<strong>' . $total . '</strong>';
         echo $boton_finalizar; ?>
     </div>

@@ -1,7 +1,7 @@
 <!--PROYECTO EXAMEN DESARROLLO ENTORNO SERVIDOR - TIENDA ONLINE - CORAL GUTIÉRREZ SÁNCHEZ-->
 <!--CONTROLADOR DE BUSCADOR/FILTRO-->
 
-<!--El controlador de buscador procesa la información que llega de la vista buscador
+<!--El controlador de buscador procesa la información que llega de la vista buscador.php
 
 Utilizo el método GET puesto que no es información sensible y de este modo el usuario podría
 guardar la URL para futuras visitas o para compartir el enlace con otras personas. 
@@ -10,9 +10,10 @@ y obtener los productos buscados con los métodos estáticos de la clase Product
 
 <?php
 
+//El título de la tienda varía en función de la categoría o nombre buscado
 $titulo_tienda = '';
 
-//Comprueba si se ha enviado el formulario por get y si se ha escogido una categoría o si se ha buscado un producto
+//Compruebo si se ha enviado el formulario por GET y si se ha escogido una categoría o si se ha buscado un producto
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 

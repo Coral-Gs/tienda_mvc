@@ -1,9 +1,10 @@
 <!--PROYECTO EXAMEN DESARROLLO ENTORNO SERVIDOR - TIENDA ONLINE - CORAL GUTIÉRREZ SÁNCHEZ-->
-<!--CONTROLADOR DE CARRITO-->
+<!--CONTROLADOR DE TIENDA-->
 
 
-<!--El controlador de carrito procesa la información que llega de la vista de tienda del formulario del carrito
-llamando a los modelos necesarios para actualizar el carrito en la BD-->
+<!--El controlador de tienda procesa la información que llega de los formularios de la vista tienda,
+del buscador y de la cabecera. Además llama a los modelos necesarios para mostrar la información
+de los productos y del carrito, mostrándolas después en la vista tienda-->
 
 <?php
 
@@ -17,27 +18,12 @@ include_once '../model/Producto.php';
 //MANEJO DE DATOS DE SESIÓN EN TIENDA
 //Página privada, si no hay sesión iniciada, redirige al controlador de acceso
 if (!isset($_SESSION['id_usuario'])) {
-    header('location:../controller/c.index.php');
+    header('location:c.index.php');
 }
 
 //Asigno los valores de la sesión a id usuario y nombre usuario
 $id_usuario = $_SESSION['id_usuario'];
 $nombre_usuario = $_SESSION['nombre'];
-
-//Si el usuario la cerrar sesión, se destruye la sesión y redirige al controlador de acceso
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    if (isset($_POST['salir'])) {
-
-        session_destroy();
-        header('location:../controller/c.index.php');
-    }
-    //Si el usuario selecciona 'finalizar compra' se redirige al controlador de factura
-    if (isset($_POST['finalizar-compra'])) {
-
-        header('location:c.factura.php');
-    }
-}
 
 //MANEJO DE DATOS DE PRODUCTOS Y CARRITO
 
@@ -80,7 +66,6 @@ if ($total_carrito == 0) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     //Recorro los productos de la tabla para buscar el ID y comprobar qué producto se ha seleccionado 
-
     foreach ($productos as $producto) {
         $id_producto = $producto->getIdProducto();
         $boton_comprar = 'comprar' . $id_producto;
@@ -106,6 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //LÓGICA DE BOTONES DEL CARRITO
 //Se pueden añadir o restar unidades de un producto con los botones '+' y '-'
 //Se pueden eliminar productos con el boton 'eliminar'
+
 //Primero compruebo si hay productos en el carrito
 if ($total_carrito != 0) {
 
@@ -151,11 +137,11 @@ if ($total_carrito != 0) {
 }
 
 //OBTENER PRODUCTOS DEL CARRITO ACTUALIZADOS
-//Vuelvo a llamar a la función para obtener todos los datos del carrito y el total actualiados
+//Vuelvo a llamar a la función para obtener todos los datos del carrito y el total actualizados
 $productos_carrito = $detalle_carrito->mostrarDatosCarrito();
 $total_carrito = $detalle_carrito->totalCarrito();
 
-//Compruebo si hay  actualizaciones en el carrito para mostrar o no el botón finalizar compra
+//Compruebo si hay  actualizaciones en el carrito para mostrar o no el botón 'finalizar compra' y el total
 if ($total_carrito == 0) {
     $mensaje_carrito = 'El carrito está vacío';
     $boton_finalizar = '';
@@ -167,11 +153,23 @@ if ($total_carrito == 0) {
                 </form>';
     $total = 'Total: ' . $total_carrito . '€';
 }
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    //Si el usuario selecciona 'finalizar compra' se redirige al controlador de factura
+    if (isset($_POST['finalizar-compra'])) {
+
+        header('location:c.factura.php');
+    }
+}
+
+
 //MOSTRAR LA INFORMACIÓN EN LA VISTA
 
 //Incluyo la cabecera
-include '../view/header.php';
+include_once '../view/header.php';
 //Incluyo el buscador
-include '../view/buscador.php';
+include_once '../view/buscador.php';
 //Incluyo la vista de la tienda
-include '../view/tienda.php';
+include_once '../view/tienda.php';

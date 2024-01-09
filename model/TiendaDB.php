@@ -1,10 +1,11 @@
+<!--PROYECTO EXAMEN DESARROLLO ENTORNO SERVIDOR - TIENDA ONLINE - CORAL GUTIÉRREZ SÁNCHEZ-->
+<!--MODELO TIENDADB-->
 
-
+<!--Clase abstracta con los datos de conexión como propiedades estáticas
+que tiene un método estático público para la conexión a BD, puesto que no necesito instanciarla 
+y de esta manera puedo usar la conexión directamente desde cualquier lugar del código-->
 
 <?php
-//Creo una clase abstracta para la conexión a la BD y un método estático público para la conexión a BD
-//Puesto que no necesito instanciarla y de esta manera puedo usar la conexión directamente
-//Desde cualquier lugar del código
 
 abstract class TiendaDB
 {

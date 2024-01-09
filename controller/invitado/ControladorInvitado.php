@@ -1,5 +1,5 @@
 <!--PROYECTO EXAMEN DESARROLLO ENTORNO SERVIDOR - TIENDA ONLINE - CORAL GUTIÉRREZ SÁNCHEZ-->
-<!--ClASE CONTROLADOR INVITADO-->
+<!--ClASE CONTROLADORINVITADO-->
 
 <!--El controlador de invitado contiene las funciones para gestionar el carrito de invitado-->
 
@@ -20,7 +20,7 @@ class ControladorInvitado
         $this->carrito_invitado = $carrito_invitado;
     }
 
-    //GETTERS
+    //GETTERS para obtener datos del carrito
 
     public function getNombreInvitado()
     {
@@ -49,7 +49,7 @@ class ControladorInvitado
         return $id_existe;
     }
 
-    //Función que modifica la cantidad de un producto por ID del carrito de invitado
+    //Función que modifica la cantidad de un producto del carrito según el ID del producto. Retorna el array
     public function modificarCantidadProducto($id_producto, $operacion)
     {
         $carrito_invitado = $this->carrito_invitado;
@@ -66,7 +66,7 @@ class ControladorInvitado
         return $carrito_invitado;
     }
 
-    //Función que agrega un producto por ID al carrito de invitado
+    //Función que agrega un producto por ID al carrito de invitado. Retorna el array modificado
     public function agregarProductoCarrito($id_producto)
     {
         $carrito_invitado = $this->carrito_invitado;
@@ -89,7 +89,6 @@ class ControladorInvitado
     }
 
     //Función para eliminar producto del carrito por ID
-    //El parámetro carrito_invitado se pasa por referencia para modificarlo directamente en memoria
     public function eliminarProductoCarrito($id_producto)
     {
         $carrito_invitado = $this->carrito_invitado;

@@ -1,10 +1,14 @@
+<!--PROYECTO EXAMEN DESARROLLO ENTORNO SERVIDOR - TIENDA ONLINE - CORAL GUTIÉRREZ SÁNCHEZ-->
+<!--MODELO CARRITO y DETALLECARRITO-->
+
+<!--Los modelos Carrito y DetalleCarrito manejan las operaciones del carrito en la BD-->
+
 <?php
 //Incluyo la clase de conexión a la BD y la clase producto
 require_once 'TiendaDB.php';
 require_once 'Producto.php';
 
 //La clase carrito para la tabla carrito de la BD y las funciones para manejarlo
-
 class Carrito
 {
     protected $id_usuario;
@@ -65,7 +69,7 @@ class Carrito
         }
     }
 
-    //Función  para mostrar si un producto existe o no en el carrito de un usuario
+    //Función para mostrar si un producto existe o no en el carrito de un usuario
     public function buscarProductoCarrito($id_producto)
     {
         $id_usuario = $this->id_usuario;
@@ -161,7 +165,7 @@ class Carrito
     }
 
     //Función para eliminar un producto del carrito
-    //Elimina por id_producto seleccionado + id_usuario asociado
+    //Elimina por id_producto seleccionado y el id_usuario asociado
     public function eliminarProducto($id_producto)
     {
         $id_usuario = $this->id_usuario;
@@ -186,8 +190,9 @@ class Carrito
             }
         }
     }
+
     //Función para vaciar el carrito
-    //Elimina todas las ocurrencias del id_usuario seleccionado de la tabla carritos, es decir, todos los productos
+    //Elimina todas las ocurrencias del id_usuario seleccionado de la tabla carrito, es decir, todos sus productos
 
     public function vaciarCarrito()
 
@@ -214,15 +219,15 @@ class Carrito
     }
 }
 
-//CLASE PRODUCTOCARRITO
+//CLASE DETALLECARRITO
 //Creo una clase que hereda de la clase Carrito y que además añade atributos de la clase Producto
 
 class DetalleCarrito extends Carrito
 {
-    public $nombre;
-    public $descripcion;
-    public $precio;
-    public $imagen;
+    private $nombre;
+    private $descripcion;
+    private $precio;
+    private $imagen;
 
     //Métodos getter
 
@@ -244,9 +249,9 @@ class DetalleCarrito extends Carrito
     }
 
     //Función para obtener los datos del carrito
-    //Devuelve un array de objetos de la clase ProductoCarrito. 
-    //Cada fila de la tabla es un objeto ProductoCarrito, por lo que puedo acceder a las propiedades
-    //De cada cada uno utilizando getters de esta clase y de la clase padre Carrito
+    //Devuelve un array de objetos de la clase DetalleCarrito. 
+    //Cada fila de la tabla es un objeto DetalleCarrito, por lo que puedo acceder a las propiedades
+    //De cada producto utilizando getters de esta clase y de la clase padre Carrito
 
     public function mostrarDatosCarrito()
     {
@@ -286,7 +291,7 @@ class DetalleCarrito extends Carrito
         try {
             $conexion = TiendaDB::conexionDB();
 
-            //Utilizo un JOIN para obtener la suma total del carrito
+            //Utilizo un JOIN y SUM para obtener la suma total del carrito
             //ON para unir las dos tablas y la clausula GROUP BY para agrupar por ID de usuario
             $sql = 'SELECT carrito.id_usuario, SUM(producto.precio * carrito.cantidad) AS total_carrito
         FROM carrito

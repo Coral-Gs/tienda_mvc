@@ -4,11 +4,10 @@
 <?php
 
 //El controlador de registro valida y procesa los datos del formulario que viene de la vista de usuario view/registro.php
-//Si el proceso es exitoso, el flujo vuelve al controlador index, que entonces mostrará la vista de tienda como usuario registrado
+//Si el proceso es exitoso, toma el control c.tienda, que le mostrará la vista de tienda como usuario registrado
 
-//Incluyo el modelo Usuario.php, Producto.php y el controlador de usuario para poder usar sus funciones
+//Incluyo los modelos y contorladores que voy a necesitar
 include_once '../model/Usuario.php';
-include_once '../model/Producto.php';
 include_once '../controller/ControladorUsuario.php';
 
 //Iniciamos la sesión de usuario y las superglobales necesarias
@@ -49,7 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pass1 = $_POST['pass1'];
         $pass2 = $_POST['pass2'];
 
-
         //Compruebo si el nombre se ha enviado y es válido
 
         if (empty($nombre)) {
@@ -60,14 +58,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $mensajes = array_merge($mensajes, $nombreValido);
             } else {
 
-                //Si el nombre es válido, compruebo el email si se ha enviado y es válido
+                //Si el nombre es válido, compruebo si el email se ha enviado y es válido
 
                 if (empty($email)) {
                     $mensajes[] = 'Debes introducir un email.';
                 } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     $mensajes[] =  'Debes introducir un email válido con el formato email@email.com';
 
-                    //Si es así, compruebo si ya existe el usuario en la BD
+                    //Si el email es válido, compruebo si ya existe el usuario en la BD
                 } else {
 
                     $existe_usuario = Usuario::buscarUsuario($email);
@@ -76,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         //Si existe lanzo mensaje de error
                         $mensajes[] = 'Ya existe un usuario con el email ' . $email . '.';
                     } else {
-                        //Si no existe, valido contraseña
+                        //Si el email no existe en la base de datos, valido la contraseña
 
                         if (!empty($pass1) && !empty($pass2)) {
 
@@ -89,20 +87,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 Usuario::crearUsuario($nombre, $email, $pass1);
 
                                 //Se asignan los valores a la sesión
-                                //Y se redirige al controlador principal index
+                                //Y se redirige al controlador de tienda para mostrarle los datos de la tienda como usuario registrado
                                 $_SESSION['nombre'] = $nombre;
                                 $_SESSION['email'] = $email;
                                 $_SESSION['id_usuario'] = Usuario::buscarIdUsuario($email);
-                                header('location:c.index.php');
+                                header('location:c.tienda.php');
                             } elseif ($contrasenia_valida !== true) {
                                 //Almaceno los mensajes de error que me devuelve la función de validarContrasenia
                                 //junto con los que pueda haber del resto de validaciones
 
                                 $mensajes = array_merge($mensajes, $contrasenia_valida);
                             } elseif (!$contrasenias_iguales) {
+                                //si las contraseñas no coinciden
                                 $mensajes[] = '¡Las contraseñas deben coincidir!';
                             }
                         } else {
+                            //Si no ha introducido una contraseña
                             $mensajes[] = 'Debes introducir una contraseña';
                         }
                     }
@@ -113,6 +113,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 //MUESTRO LA INFORMACIÓN EN LA VISTA EN CASO DE QUE HAYA HABIDO ALGÚN ERROR
-//Si el proceso se ha completado correctamente, se habría redirigido a c.index.php');
+//Si el proceso se ha completado correctamente, se habría redirigido a c.tienda.php');
 
-include '../view/registro.php';
+include_once '../view/registro.php';

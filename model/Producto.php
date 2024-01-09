@@ -1,3 +1,8 @@
+<!--PROYECTO EXAMEN DESARROLLO ENTORNO SERVIDOR - TIENDA ONLINE - CORAL GUTIÉRREZ SÁNCHEZ-->
+<!--MODELO PRODUCTO-->
+
+<!--Los modelo Producgto maneja los datos de la tabla Producto en BD-->
+
 <?php
 
 //Incluyo la clase de conexión a la BD
