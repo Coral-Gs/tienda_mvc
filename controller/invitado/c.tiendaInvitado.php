@@ -6,27 +6,13 @@ llamando a los modelos necesarios para actualizar el carrito en la BD-->
 
 <?php
 //Incuyo modelos y controladores que voy a utilizar
-include_once '../model/Producto.php';
+include_once '../../model/Producto.php';
 include_once 'ControladorInvitado.php';
-
 
 //Página privada: si no hay cookies creadas redirige a la página de acceso
 if (!isset($_COOKIE['carrito_invitado']) || !isset($_COOKIE['nombre_invitado'])) {
 
-    header('location:c.index.php');
-}
-
-//Si el usuario selecciona el botón acceser o registro, le redirige al formulario correspondiente
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    //ACCESO COMO USUARIO REGISTRADO
-    if (isset($_POST['login'])) {
-        header('location:c.login.php');
-
-        //ACCESO POR REGISTRO
-    } elseif (isset($_POST['registro'])) {
-        header('location:c.registro.php');
-    }
+    header('location:../c.index.php');
 }
 
 //Compruebo si ya hay productos en la cookie
@@ -34,7 +20,6 @@ $carrito_invitado = array();
 if (!empty($_COOKIE['carrito_invitado'])) {
     $carrito_invitado = unserialize($_COOKIE['carrito_invitado']);
 }
-
 
 //Creo un nuevo objeto de invitado y las variables que voy a necesitar
 $invitado = new ControladorInvitado($_COOKIE['nombre_invitado'], $carrito_invitado);
@@ -45,7 +30,7 @@ $total_carrito = $invitado->totalCarritoInvitado();
 $productos = Producto::mostrarDatosProductos();
 
 //Compruebo si hay algun filtro activo
-include 'c.buscador.php';
+include '../c.buscador.php';
 
 //Compruebo si hay artículos inicialmente en el carrito para mostrar o no el total, el botón finalizar compra y el mensaje de carrito vacío
 $boton_finalizar = '';
@@ -161,7 +146,7 @@ if ($total_carrito == 0) {
     $total = '';
 } else {
     $mensaje_carrito = '';
-    $boton_finalizar = ' <form method="post" action="../controller/c.facturaInvitado.php">
+    $boton_finalizar = ' <form method="post" action="../../controller/invitado/c.facturaInvitado.php">
                     <input type="submit" name="finalizar-compra" value="Finalizar compra" class="boton-comprar">
                 </form>';
     $total = 'Total: ' . $total_carrito . '€';
@@ -170,8 +155,8 @@ if ($total_carrito == 0) {
 //MOSTRAR LA INFORMACIÓN EN LA VISTA
 
 //Incluyo la cabecera
-include_once '../view/headerInvitado.php';
+include_once '../../view/invitado/headerInvitado.php';
 //Incluyo el buscador
-include_once '../view/buscadorInvitado.php';
+include_once '../../view/invitado/buscadorInvitado.php';
 //Incluyo la vista de la tienda
-include_once '../view/tiendaInvitado.php';
+include_once '../../view/invitado/tiendaInvitado.php';

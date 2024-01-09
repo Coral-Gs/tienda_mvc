@@ -23,7 +23,7 @@ En caso de querer hacer login, hay otro formulario que redirige al controlador p
              </div>
          </div>
          <div class="formulario-login">
-             <h1>Nuevo usuario</h1>
+             <h1>Nuevo usuario</h1><br>
              <!--Formulario de log in validado en cliente con HTML-->
              <form method='POST' action='../controller/c.registro.php' class="container">
                  <label>Nombre: </label>
@@ -37,7 +37,6 @@ En caso de querer hacer login, hay otro formulario que redirige al controlador p
                  <input type="submit" name="enviar" value="REGISTRARSE" class="boton-acceder">
                  <a href="../controller/c.login.php">Ya estoy registrado</a><br>
                  <?= $enlace_volver ?>
-
              </form>
          </div>
          <div class="contenedor-mensajes">

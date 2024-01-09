@@ -15,7 +15,7 @@
             foreach ($productos as $producto) : ?>
                 <div class="col-sm-4 col-md-3 col-lg-2" id="contenedor-producto">
                     <div class='producto'>
-                        <form method="post" action="../controller/c.tiendaInvitado.php">
+                        <form method="post" action="../../controller/invitado/c.tiendaInvitado.php">
                             <img src="data:image/jpeg;base64,<?= base64_encode($producto->getImagen()) ?>" alt="Imagen del producto" width="100"><br>
                             <?= $producto->getNombre() ?><br>
                             <?= $producto->getPrecio() ?> €<br>
@@ -35,7 +35,7 @@
         echo $mensaje_carrito;
         foreach ($carrito_invitado as $producto_carrito) :
         ?>
-            <form method="post" action="../controller/c.tiendaInvitado.php">
+            <form method="post" action="../../controller/invitado/c.tiendaInvitado.php">
                 <div class="producto-carrito">
                     <img src="data:image/jpeg;base64,<?= base64_encode(Producto::obtenerImagenPorId($producto_carrito['id_producto'])) ?>" alt="Imagen del producto" width="50"><br>
                     <?= $producto_carrito['nombre'] ?><br>

@@ -6,7 +6,7 @@ utiliza el método GET para manejar la información. La petición se envía al c
 c.tiendaInvitado para recuperar la información de los modelos y devolverla a la vista-->
 
 <div class="row">
-    <form method="get" action="../controller/c.tiendaInvitado.php" id="buscador">
+    <form method="get" action="../../controller/invitado/c.tiendaInvitado.php" id="buscador">
         <select name=" categoria" class="filtro">
             <option value="todos">Todos los productos</option>
             <option value="bombones">Bombones</option>

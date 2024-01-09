@@ -34,7 +34,7 @@
         <!--Formulario para generar factura y vaciar el carrito-->
         <?= $boton_finalizar ?>
         <!--Formulario para volver a la página de tienda después de comprar-->
-        <form method="POST" action="../controller/c.tiendaInvitado.php">
+        <form method="POST" action="../../controller/invitado/c.tiendaInvitado.php">
             <input type="submit" name="seguir_compra" value="Seguir comprando" class="boton-seguir">
         </form>
     </div>

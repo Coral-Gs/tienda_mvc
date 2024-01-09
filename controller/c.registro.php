@@ -30,9 +30,9 @@ if (!isset($_SESSION['id_usuario'])) {
 $mensajes = array();
 $enlace_volver = '';
 
-//Si exiten cookies, el enlace 'volver' regirige a la tienda
+//Si exiten cookies, el enlace 'volver' regirige a la tienda de invitado, si no al acceso principal
 if (!empty($_COOKIE['nombre_invitado'])) {
-    $enlace_volver = '<a href="c.tiendaInvitado.php">Volver</a>';
+    $enlace_volver = '<a href="invitado/c.tiendaInvitado.php">Volver</a>';
 } else {
     $enlace_volver = '<a href="../view/acceso.php">Volver</a>';
 }

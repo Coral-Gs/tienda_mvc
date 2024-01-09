@@ -24,8 +24,6 @@ if (!isset($_SESSION['id_usuario'])) {
 $id_usuario = $_SESSION['id_usuario'];
 $nombre_usuario = $_SESSION['nombre'];
 
-
-
 //Si el usuario la cerrar sesión, se destruye la sesión y redirige al controlador de acceso
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 

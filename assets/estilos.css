@@ -59,9 +59,10 @@
 }
 
 .contenedor-mensajes {
-  padding: 40px 40px 20px 20px;
+  color: red;
+  padding: 20px 40px 20px 20px;
   margin: 0 auto;
-  margin-top: 20px;
+  margin-top: 10px;
   max-width: fit-content;
   text-align: left;
 }
@@ -210,6 +211,7 @@
   border-radius: 5px;
   border-style: none;
   padding: 10px 20px;
+  text-decoration: none;
 }
 .boton-acceder-invitado:hover {
   background-color: #491b1b;
@@ -223,6 +225,7 @@
   border-radius: 5px;
   border-style: solid;
   padding: 10px 20px;
+  text-decoration: none;
 }
 
 .boton-registro-invitado:hover {

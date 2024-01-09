@@ -5,7 +5,7 @@
 
 <?php
 
-include_once '../model/Producto.php';
+include_once '../../model/Producto.php';
 
 class ControladorInvitado
 {

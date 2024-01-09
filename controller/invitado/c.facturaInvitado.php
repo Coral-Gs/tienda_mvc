@@ -6,14 +6,14 @@
 <?php
 
 //Incuyo modelos y funciones que voy a utilizar
-include_once '../model/Producto.php';
+include_once '../../model/Producto.php';
 include_once 'ControladorInvitado.php';
 
 //MANEJO DE DATOS DE COOKIES
 
-//Página privada, si no hay cookies, redirige a la página de acceso
+//Página privada: si no hay cookies, redirige a la página de acceso
 if (!isset($_COOKIE['carrito_invitado'])) {
-    header('location:c.index.php');
+    header('location:../c.index.php');
 }
 
 //Asigno los valores de las cookies
@@ -25,7 +25,7 @@ $mensaje_factura = $nombre_usuario . ', estos son los detalles de tu pedido:';
 //Creo instancias y variables que necesito para la factura
 $invitado = new ControladorInvitado($nombre_usuario, $carrito_invitado);
 $total_carrito = $invitado->totalCarritoInvitado();
-$boton_finalizar = '<form method="POST" action="../controller/c.facturaInvitado.php">
+$boton_finalizar = '<form method="POST" action="../../controller/invitado/c.facturaInvitado.php">
             <input type="submit" name="factura" value="Finalizar compra y vaciar carrito" class="boton-finalizar">
         </form>';
 
@@ -46,9 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //MOSTRAR LA INFORMACIÓN EN LA VISTA
 
 //Llamo a la cabecera
-include '../view/headerInvitado.php';
+include_once '../../view/invitado/headerInvitado.php';
 //Llamo a la factura
-include '../view/facturaInvitado.php';
+include_once '../../view/invitado/facturaInvitado.php';
 
 
 ?>

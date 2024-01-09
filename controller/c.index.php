@@ -27,9 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //Si no hay sesión creada pero hay cookies de invitado, redirige al controlador de tiendaInvitado
 if (!isset($_SESSION['nombre']) && isset($_COOKIE['nombre_invitado'])) {
 
-
-    header('location:c.tiendaInvitado.php');
-
+    header('location:invitado/c.tiendaInvitado.php');
 
     //USUARIO SIN SESIÓN INICIADA NI COOKIES
     //Si no hay un sesión creada y si no se ha seleccionado una opción de acceso muestro el menú de acceso principal
@@ -55,7 +53,7 @@ if (!isset($_SESSION['nombre']) && isset($_COOKIE['nombre_invitado'])) {
             setcookie('nombre_invitado', $nombre_usuario, time() + 3600 * 24 * 30, "/");
             setcookie('carrito_invitado', $carrito_invitado, time() + 3600 * 24 * 30, "/");
             //Toma el mando el controlador de tienda de invitado
-            header('location:c.tiendaInvitado.php');
+            header('location:invitado/c.tiendaInvitado.php');
         }
     } else {
 
