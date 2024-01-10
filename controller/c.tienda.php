@@ -157,6 +157,13 @@ if ($total_carrito == 0) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    //Si el usuario selecciona 'cerrar sesión', se cierra la sesión y se redirige al controlador c.index.php
+    if (isset($_POST['salir'])) {
+
+        session_destroy();
+        header('location:c.index.php');
+    }
+
     //Si el usuario selecciona 'finalizar compra' se redirige al controlador de factura
     if (isset($_POST['finalizar-compra'])) {
 

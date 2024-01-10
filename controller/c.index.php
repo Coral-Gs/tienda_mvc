@@ -61,6 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['salir'])) {
 
         session_destroy();
-        header('location:../view/acceso.php');
+        include '../view/acceso.php';
     }
 }
