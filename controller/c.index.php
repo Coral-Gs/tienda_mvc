@@ -33,7 +33,8 @@ if (!isset($_SESSION['nombre']) && isset($_COOKIE['nombre_invitado'])) {
         } elseif (isset($_POST['invitado']) && !isset($_COOKIE['nombre_invitado'])) {
 
             //Creo cookies de invitado para almacenar nombre y un array para el carrito
-            $nombre_usuario = $_POST['nombre_invitado'];
+            //Uso el método trim() para eliminar espacios en blanco al principio y final del nombre
+            $nombre_usuario = trim($_POST['nombre_invitado']);
             $productos_carrito_invitado = array();
             //Utilizo la función serialize() para poder introducir la información del array en la cookie
             $carrito_invitado = serialize($productos_carrito_invitado);
@@ -41,6 +42,9 @@ if (!isset($_SESSION['nombre']) && isset($_COOKIE['nombre_invitado'])) {
             setcookie('carrito_invitado', $carrito_invitado, time() + 3600 * 24 * 30, "/");
             //Redirecciono hacia el controlador de tienda de invitado
             header('location:invitado/c.tiendaInvitado.php');
+
+            //Los datos de invitado permanecerán en el navegador del cliente 
+            //mientras no se borren las cookies o hasta que expiren después de 30 días desde la última actualización del carrito
         }
     } else {
 

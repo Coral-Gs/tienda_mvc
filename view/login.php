@@ -39,6 +39,7 @@ En caso de querer registrarse, hay un enlace al controlador de registro-->
         </div>
         <div class="contenedor-mensajes">
             <ul>
+                <!--Recorro y muestro posibles mensajes de error durante el login-->
                 <?php
                 foreach ($mensajes as $mensaje) : ?>
                     <li>

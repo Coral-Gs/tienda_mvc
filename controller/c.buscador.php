@@ -17,17 +17,20 @@ $titulo_tienda = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-    //Si se ha elegido una categoría diferente de 'todos' muestra los productos seleccionados
+    //Si he elegido una categoría que no sea la de 'todos' me muestra los productos seleccionados
     if (isset($_GET['categoria']) && $_GET['categoria'] != "todos") {
         $categoria = $_GET['categoria'];
         $productos = Producto::filtrarProductosCategoria($categoria);
         $titulo_tienda = 'Selección de ' . $categoria;
 
-        //Si se ha elegido buscar un producto muestra el producto buscado o que contenga esa palabra 
-        //y si no existe el producto en la tienda muestra un mensaje
+        //Si en lugar de eso he elegido buscar un producto por nombre, me saca el producto buscado o que contenga esa palabra 
+        //y si no existe el producto en la tienda muestra un mensaje de que no se ha encontrado el producto
     } elseif (isset($_GET['producto-buscado'])) {
         $producto_buscado = $_GET['producto-buscado'];
+        //Para obtener el producto/los productos buscados, llamo a la función estática correspondiente
+        //pasandole por parámetro lo que ha introducido el usuario en la búsqueda
         $productos = Producto::filtrarProductosNombre($producto_buscado);
+        //Si me devuelve algún producto el título será 'resultados de búsqueda' y si no un mensaje de que no se ha encontrado
         if (!empty($productos)) {
             $titulo_tienda = 'Resultados de búsqueda';
         } else {

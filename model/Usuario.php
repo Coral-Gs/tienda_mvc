@@ -10,6 +10,8 @@ require_once 'ControladorUsuario.php';
 
 class Usuario
 {
+    //Cada propiedad de la clase corresponde a cada campo de la tabla Producto en la BD
+
     private $id_usuario;
     private $nombre;
     private $email;
@@ -59,7 +61,10 @@ class Usuario
             $consulta->bindParam(':email', $email);
             //3. Ejecuta la consulta
             $consulta->execute();
-            //4. Retorna los resultados
+            //4. Obtengo los resultados como un array de objetos de clase Usuario
+            //para después poder usar los métodos getters y obtener los datos que me interesan del usuario.
+            //He intentado usar fetch para que me devuelva una sola fila en lugar de fetchAll pero me daba error
+            //al usarlo con FETCH_CLASS, de modo que lo he dejado como fetchAll (aunque según la consulta que realizo solo me debería devolver una fila de todas maneras)
             $resultados = $consulta->fetchAll(PDO::FETCH_CLASS, 'Usuario');
             return $resultados;
         } catch (PDOException $e) {
@@ -73,7 +78,8 @@ class Usuario
         }
     }
 
-    //Función estática para buscar un usuario por email
+    //Función estática para buscar un usuario por email. 
+    //Devuelve true si ha encontrado al usuario o false si no existte en la BD
 
     public static function buscarUsuario($email)
     {
@@ -89,7 +95,7 @@ class Usuario
             $consulta->bindParam(':email', $email);
             //3. Ejecuta la consulta
             $consulta->execute();
-            //4. Verifico si hay resultados
+            //4. Verifico si hay resultados con la función rowCount()
             if ($consulta->rowCount() > 0) {
                 return true;
             } else {
@@ -111,22 +117,26 @@ class Usuario
     //Toma por parámetros el nombre, email y la contraseña previamente validados
     public static function crearUsuario($nombre, $email, $contrasenia)
     {
+
+        //Uso la función estátita hashContrasenia de ControladorUsuario
+        //Para crear un hash de contraseña según el parámetro de contraseña pasado, aporta más seguridad a las contraseñas de usuario
+        //Ya que no las guardo como texto plano en la BD 
         $hash = ControladorUsuario::hashContrasenia($contrasenia);
 
         try {
             //Conexión a BD
             $conexion = TiendaDB::conexionDB();
 
-            //1. Prepara la consulta
+            //1. Preparo la consulta
             $sql = 'INSERT INTO usuario(nombre, email, contrasenia) VALUES (:nombre, :email,:pass);';
             $consulta = $conexion->prepare($sql);
 
-            //2. Une los parámetros
+            //2. Uno los parámetros con bindParam()
             $consulta->bindParam(':nombre', $nombre);
             $consulta->bindParam(':email', $email);
             $consulta->bindParam(':pass', $hash);
 
-            //3. Ejecuta la consulta
+            //3. Ejecutao la consulta
             $consulta->execute();
 
             //Capturo el error y muestro el mensaje en caso de ejecución fallida
@@ -174,8 +184,9 @@ class Usuario
         }
     }
 
-    //Función estática para comprobar si la contraseña que ha introducido el usuario
+    //Función estática para comprobar si la contraseña asociada al email que ha introducido el usuario
     //Concuerda con el hash asociado en la BD, según el email introducido
+    //Devuelve un valor booleano true si coinciden o false si no coinciden
     public static function comprobarContraseniaHash($contrasenia, $email)
     {
         $usuarioHash = '';
@@ -204,6 +215,7 @@ class Usuario
             }
         }
         //Verifica si la contraseña introducida concuerda con el hash asociado en la BD
+        //Si concuerda, me devuelve True y si no False
         if (password_verify($contrasenia, $usuarioHash)) {
             return true;
         } else {

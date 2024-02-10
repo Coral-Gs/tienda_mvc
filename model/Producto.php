@@ -11,6 +11,7 @@ require_once 'TiendaDB.php';
 //La clase producto con todas las propiedades de los productos
 class Producto
 {
+    //Cada propiedad de la clase corresponde a cada campo de la tabla Producto en la BD
     private $id_producto;
     private $nombre;
     private $descripcion;
@@ -75,6 +76,8 @@ class Producto
             //3. Ejecuto la consulta
             $consulta->execute();
             //4. Obtengo los resultados como un array de objetos de clase Producto
+            //Para poder luego obtener los datos con los métodos getters, porque
+            //Cara campo de la tabla se corresponde con las propiedades de la clase
             $resultados = $consulta->fetchAll(PDO::FETCH_CLASS, 'Producto');
 
             return $resultados;

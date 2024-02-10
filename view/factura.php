@@ -16,6 +16,7 @@
                 <th>Precio</th>
                 <th>Subtotal</th>
             </tr>
+            <!--Recorro los productos del carrito y obtengo los datos con getters-->
             <?php foreach ($productos_carrito as $producto) : ?>
                 <tr>
                     <td><?= $producto->getNombre() ?></td>

@@ -40,9 +40,9 @@ if (!empty($_COOKIE['nombre_invitado'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['submit'])) {
-
-        $email = $_POST['email'];
-        $contrasenia = $_POST['pass'];
+        //Uso el método trim() para eliminar espacios en blanco al principio y final de los datos
+        $email = trim($_POST['email']);
+        $contrasenia = trim($_POST['pass']);
 
         //Valido si los campos de email y password están vacíos
         if (!empty($email) && !empty($contrasenia)) {

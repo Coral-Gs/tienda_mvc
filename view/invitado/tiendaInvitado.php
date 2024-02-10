@@ -11,11 +11,14 @@
             <!--VISUALIZACIÓN DE PRODUCTOS Y FORMULARIO PARA COMPRAR CADA PRODUCTO-->
             <!--El boton para comprar cada producto está compuesto por ' comprar+idproducto', de modo que al darle a comprar tenga acceso a los datos del producto correspondiente el array $productos contendrá todos los productos o productos filtrados/buscados y muestro la información con un foreach-->
             <?php
-            //Muestro los productos al usuario con/ sin filtrado
+            //Muestro los productos al usuario con/ sin filtrado con un foreach que recorre array asociativo $productos
             foreach ($productos as $producto) : ?>
                 <div class="col-sm-4 col-md-3 col-lg-2" id="contenedor-producto">
                     <div class='producto'>
                         <form method="post" action="../../controller/invitado/c.tiendaInvitado.php">
+                            <!-- Uso el método base64_encode($str) de PHP para codificar los datos de las imágenes que obtengo de la base de datos 
+                            y poder mostrarlas directamente, en lugar de utilizar enlaces externos. El atributo data:image/jpeg;base64 especifica que 
+                            es una imagen en formato base64-->
                             <img src="data:image/jpeg;base64,<?= base64_encode($producto->getImagen()) ?>" alt="Imagen del producto" width="100"><br>
                             <?= $producto->getNombre() ?><br>
                             <?= $producto->getPrecio() ?> €<br>
@@ -33,6 +36,7 @@
         <p class="cabecera-carrito">Carrito</p>
         <?php
         echo $mensaje_carrito;
+        //Muestro productos del carrito con un foreach que recorre array asociativo $productos_carrito
         foreach ($carrito_invitado as $producto_carrito) :
         ?>
             <form method="post" action="../../controller/invitado/c.tiendaInvitado.php">

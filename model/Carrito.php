@@ -11,6 +11,9 @@ require_once 'Producto.php';
 //La clase carrito para la tabla carrito de la BD y las funciones para manejarlo
 class Carrito
 {
+
+    //Cada propiedad corresponde a cada campo de la tabla Carrito en la BD
+    //uso protected en este caso porque he creado otra clase hija que hereda estas propiedades
     protected $id_usuario;
     protected $id_producto;
     protected $cantidad;
@@ -220,10 +223,11 @@ class Carrito
 }
 
 //CLASE DETALLECARRITO
-//Creo una clase que hereda de la clase Carrito y que además añade atributos de la clase Producto
+//Creo una clase que hereda las propiedades y métodos de la clase Carrito y que además añade atributos de la clase Producto
 
 class DetalleCarrito extends Carrito
 {
+
     private $nombre;
     private $descripcion;
     private $precio;
@@ -250,7 +254,7 @@ class DetalleCarrito extends Carrito
 
     //Función para obtener los datos del carrito
     //Devuelve un array de objetos de la clase DetalleCarrito. 
-    //Cada fila de la tabla es un objeto DetalleCarrito, por lo que puedo acceder a las propiedades
+    //Cada fila de la tabla es un objeto DetalleCarrito, por lo que puedo acceder después a las propiedades
     //De cada producto utilizando getters de esta clase y de la clase padre Carrito
 
     public function mostrarDatosCarrito()
@@ -270,6 +274,8 @@ class DetalleCarrito extends Carrito
             $consulta->bindParam(':id_usuario', $id_usuario);
             $consulta->execute();
 
+            //Al utilizar fetchAll FETCH_CLASS tengo que indicarle la clase y me devuelve
+            //un objeto de DetalleCarrito para poder usar los métodos getters después
             $resultados = $consulta->fetchAll(PDO::FETCH_CLASS, 'DetalleCarrito');
             return $resultados;
         } catch (PDOException $e) {
@@ -284,6 +290,7 @@ class DetalleCarrito extends Carrito
     }
 
     //Función para calcular el total del carrito de un usuario
+    //Devuelve el total o 0 si no hay productos
     public function totalCarrito()
     {
         $id_usuario = $this->id_usuario;
@@ -291,7 +298,7 @@ class DetalleCarrito extends Carrito
         try {
             $conexion = TiendaDB::conexionDB();
 
-            //Utilizo un JOIN y SUM para obtener la suma total del carrito
+            //Utilizo un JOIN y SUM() para obtener la suma total del carrito
             //ON para unir las dos tablas y la clausula GROUP BY para agrupar por ID de usuario
             $sql = 'SELECT carrito.id_usuario, SUM(producto.precio * carrito.cantidad) AS total_carrito
         FROM carrito

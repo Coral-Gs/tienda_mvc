@@ -39,14 +39,15 @@ if (!empty($_COOKIE['nombre_invitado'])) {
 //Compruebo si se ha enviado el formulario por POST y creo variables
 //En cada comprobación almaceno los mensajes de error en el array $mensajes que me devuelven las funciones
 //para mostrarlos al usuario en la vista
+//Uso el método trim() para eliminar espacios en blanco al principio y final de los datos
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['enviar'])) {
 
-        $nombre = $_POST['nombre'];
-        $email = $_POST['email'];
-        $pass1 = $_POST['pass1'];
-        $pass2 = $_POST['pass2'];
+        $nombre = trim($_POST['nombre']);
+        $email = trim($_POST['email']);
+        $pass1 = trim($_POST['pass1']);
+        $pass2 = trim($_POST['pass2']);
 
         //Compruebo si el nombre se ha enviado y es válido
 

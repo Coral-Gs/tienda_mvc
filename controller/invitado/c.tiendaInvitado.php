@@ -32,10 +32,12 @@ $nombre_usuario = $invitado->getNombreInvitado();
 $total_carrito = $invitado->totalCarritoInvitado();
 $productos = Producto::mostrarDatosProductos();
 
-//Compruebo si hay algun filtro activo
+//Compruebo si hay algun filtro activo con el controlador de buscador
 include '../c.buscador.php';
 
 //Compruebo si hay artículos inicialmente en el carrito para mostrar o no el total, el botón finalizar compra y el mensaje de carrito vacío
+//Si el total es 0 no hay productos en el carrito y por tanto no muestro el botón ni el total
+
 $boton_finalizar = '';
 $mensaje_carrito = '';
 $total = '';
@@ -70,13 +72,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             //Compruebo si el producto está ya en el carrito 
             $producto_en_carrito = $invitado->buscarProductoInvitado($id_producto);
 
-            //Si está, sumo 1 a la cantidad del producto
+            //Si está, sumo 1 a la cantidad del producto con modificarCantidadProducto()
             if ($producto_en_carrito) {
                 $operacion = 'sumar';
 
                 $carrito_invitado = $invitado->modificarCantidadProducto($id_producto, $operacion);
             } else {
-                //Si no está, añado el nuevo producto al carrito
+                //Si no está, añado el nuevo producto al carrito con la función específica
                 $carrito_invitado = $invitado->agregarProductoCarrito($id_producto);
             }
         }
@@ -90,15 +92,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 if ($total_carrito != 0) {
 
+    //Recorro productos del carrito
     foreach ($carrito_invitado as $producto) {
 
-        //Asigno valores a los botones añadiendo el id del producto
+        //Asigno valores a los botones de manejo del carrito añadiendo el id del producto
         $id_producto = $producto['id_producto'];
         $boton_sumar = 'sumar' . $id_producto;
         $boton_restar = 'restar' . $id_producto;
         $boton_eliminar = 'eliminar' . $id_producto;
 
-        //Si se ha pulsado el boton '+' se suma una unidad a la cantidad del producto
+        //Si se ha pulsado el boton '+' se suma una unidad a la cantidad del producto con la función modificarCantidadProducto()
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST[$boton_sumar])) {
                 $operacion = 'sumar';
@@ -109,7 +112,7 @@ if ($total_carrito != 0) {
             } elseif (isset($_POST[$boton_restar])) {
                 $operacion = 'restar';
 
-                //Si la cantidad es mayor que 1 se resta 1 unidad
+                //Si la cantidad es mayor que 1 se resta 1 unidad (también lo compruebo en la dunción modificarCantidadProducto() por si acaso)
                 if ($producto['cantidad'] > 1) {
 
                     $operacion = 'restar';
@@ -128,15 +131,19 @@ if ($total_carrito != 0) {
     }
 }
 
-//Actualizo la información de la cookie con los últimos datos del array del carrito
+//Actualizo la información de la cookie con los últimos datos del array del carrito con setcookie()
+//Usando de nuevo la función serialize() para poder introducir los datos en la cookie porque no acepta el array directamente
 $carrito_invitado = $carrito_invitado;
 $carrito_invitado_cookie = serialize($carrito_invitado);
 setcookie('carrito_invitado', $carrito_invitado_cookie, time() + 3600 * 24 * 30, "/");
-//Actualizo total del carrito
+setcookie('nombre_invitado', $nombre_usuario, time() + 3600 * 24 * 30, "/"); //Actualizo de nuevo la cookie de nombre_invitado también para que tenga la misma duración que el carrito
+
+//Actualizo total del carrito para poder mostrar en la vista la última información
 $invitado->setCarritoInvitado($carrito_invitado);
 $total_carrito = $invitado->totalCarritoInvitado();
 
 //Compruebo total carrito actualizado para mostrar o no el botón 'finalizar compra' y el total
+//Si el total es 0 no hay productos en el carrito y por tanto no muestro el botón ni el total
 if ($total_carrito == 0) {
     $mensaje_carrito = 'El carrito está vacío';
     $boton_finalizar = '';

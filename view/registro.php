@@ -41,6 +41,7 @@ En caso de querer hacer login, hay un enlace al controlador de login-->
          </div>
          <div class="contenedor-mensajes">
              <ul>
+                 <!--Recorro y muestro posibles mensajes de error durante el login-->
                  <?php
                     foreach ($mensajes as $mensaje) : ?>
                      <li>
